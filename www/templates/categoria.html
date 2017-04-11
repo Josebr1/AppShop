@@ -1,0 +1,10 @@
+<ion-view title="Categoria" >
+<ion-content padding="true" class="has-header">
+      <ion-item	ng-repeat="produto	in	produtos" class="item-thumbnail-left" id="categoria-list-item94" ui-sref="detalheDoProduto" style="">
+        <img	ng-src="{{produto.foto}}" style="object-fit:	cover">
+        <h2>{{produto.nome}}</h2>
+        <p>{{produto.preco}}</p>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

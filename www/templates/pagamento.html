@@ -1,0 +1,51 @@
+<ion-view title="Pagamento" id="page10">
+  <ion-content padding="true" class="has-header">
+    <div class="list card" id="pagamento-card210">
+
+      <div class="item item-body" id="pagamento-list-item-container18" style="">
+        <ion-list id="pagamento-list10">
+          <ion-item class="item-icon-left" id="pagamento-list-item85" style="">
+            <i class="icon ion-card"></i>Pague na entrega</ion-item>
+          <ion-radio id="pagamento-radio7">Cartão de débito/crédito</ion-radio>
+          <ion-radio id="pagamento-radio8">Dinheiro</ion-radio>
+          <ion-radio id="pagamento-radio9">Vale refeição</ion-radio>
+        </ion-list>
+      </div>
+    </div>
+    <div class="item item-body" id="pagamento-list-item-container19" style="">
+      <ion-list id="pagamento-list11">
+        <ion-item class="item-icon-left" id="pagamento-list-item88" style="">
+          <i class="icon ion-ios-location"></i>Endereço de entrega</ion-item>
+        <form id="pagamento-form7" class="list">
+          <label class="item item-input" id="pagamento-input12" name="rua">
+            <span class="input-label">Rua</span>
+            <input placeholder="" type="text">
+          </label>
+          <label class="item item-input" id="pagamento-input13" name="numero">
+            <span class="input-label">N°</span>
+            <input placeholder="" type="text">
+          </label>
+          <label class="item item-input" id="pagamento-input14" name="bairro">
+            <span class="input-label">Bairro</span>
+            <input placeholder="" type="text">
+          </label>
+          <label class="item item-input" id="pagamento-input15" name="cep">
+            <span class="input-label">CEP</span>
+            <input placeholder="" type="text">
+          </label>
+        </form>
+      </ion-list>
+    </div>
+    <div class="list card" id="pagamento-card211">
+      <div class="item item-body" id="pagamento-list-item-container20" style="">
+        <ion-list id="pagamento-list12">
+          <ion-item class="item-icon-left" id="pagamento-list-item89" style="">
+            <i class="icon ion-android-cart"></i>Pedido</ion-item>
+        </ion-list>
+        <h2 id="pagamento-heading5" style="color: rgb(0, 0, 0);">Total</h2>
+        <h2 id="pagamento-heading6" style="color: rgb(41, 233, 36);">R$ 37,00</h2>
+      </div>
+    </div>
+    <a id="pagamento-button10" class="button button-assertive  button-block icon-right ion-android-checkmark-circle" ng-click="finalizarPedido()">FAZER PEDIDO</a>
+  </ion-content>
+</ion-view>
