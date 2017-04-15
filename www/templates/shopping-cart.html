@@ -1,0 +1,40 @@
+<ion-view title="Meu Carrinho" id="shopping-cart">
+  <ion-content padding="true" class="has-header">
+
+    <div class="list card">
+
+      <div class="item item-body">
+        <ion-list>
+          <ion-item class="item-thumbnail-left">
+            <h2>Hamburguer</h2>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <ion-item class="item-icon-left assertive" ui-sref="searchByProduct">
+        <i class="icon ion-android-add"></i>ADICIONAR MAIS ITENS</ion-item>
+    </div>
+
+    <div class="list card">
+      <div class="item item-body">
+
+        <div class="show-list-numbers-and-dots">
+          <p class="text">Taxa de entrega (30 - 45 min)</p>
+        </div>
+
+        <div class="show-list-numbers-and-dots">
+          <p class="text">R$ 7,00</p>
+        </div>
+
+        <h2 class="text-bold">Total do pedido</h2>
+
+        <div id="meuCarrinho-markdown19" class="show-list-numbers-and-dots">
+          <p class="text">R$ 14,50</p>
+        </div>
+
+      </div>
+    </div>
+
+    <a ui-sref="detailIsPayment" id="payment" class="button button-assertive  button-block icon-right ion-android-arrow-dropright button-payment">ESCOLHER FORMA DE PAGAMENTO</a>
+  </ion-content>
+</ion-view>

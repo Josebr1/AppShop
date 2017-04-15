@@ -1,1 +1,58 @@
 /* Empty. Add your own CSS if you like */
+
+/* Cor de fundo da tela de singIn e singUp */
+.background-sign {
+  background-color: rgb(244, 67, 54);
+}
+
+/* Spaçamento padrão*/
+.spacer {
+  height: 20px;
+}
+
+/* Template/profile */
+.img-info {
+  display: block;
+  width: 20%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Template/shopping-cart */
+.button-payment {
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.text {
+  margin-top: 0px;
+  color: #000000;
+}
+
+.text-bold {
+  font-style: inherit;
+  color: rgb(0, 0, 0);
+  font-weight: 600;
+}
+
+/* Template/product-detail */
+.text-title {
+  color: rgb(0, 0, 0);
+  font-weight: 600;
+}
+
+.style-card-img {
+  margin: 0px;
+  line-height: 250px;
+  background-color: rgb(232, 235, 239);
+  text-align: center;
+}
+
+.img-card {
+  font-size: 64px;
+  color: rgb(136, 136, 136);
+  vertical-align: middle;
+}
+
+

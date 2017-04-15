@@ -1,0 +1,32 @@
+<ion-view title="Login" hide-nav-bar="true" id="signIn" class="background-sign">
+  <ion-content padding="true" class="manual-ios-statusbar-padding">
+
+    <div class="list card">
+      <div class="item item-body">
+        <form id="login" class="list">
+
+          <button id="login-button3" class="button button-positive  button-block icon-left ion-social-facebook-outline">Facebook</button>
+
+          <div class="spacer"></div>
+
+          <label class="item item-input item-floating-label" name="email">
+            <span class="input-label">E-Mail</span>
+            <input placeholder="E-Mail" type="email">
+          </label>
+
+          <label class="item item-input item-floating-label" name="senha">
+            <span class="input-label">Senha</span>
+            <input placeholder="Senha" type="password">
+          </label>
+
+          <div class="spacer"></div>
+
+          <a ui-sref="tabsController.home" class="button button-positive  button-block button-outline icon-left ion-log-in">Sign in</a>
+          <a ui-sref="signUp" class="button button-positive  button-clear">Registrar-se</a>
+
+        </form>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>

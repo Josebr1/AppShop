@@ -9,12 +9,12 @@ angular.module('app.routes', ['ionicUIRouter'])
     $stateProvider
 
 
-      .state('tabsController.categorias', {
-        url: '/categories',
+      .state('tabsController.allCategories', {
+        url: '/all-categories',
         views: {
-          'tab3': {
-            templateUrl: 'templates/categorias.html',
-            controller: 'categoriasCtrl'
+          'categories': {
+            templateUrl: 'templates/all-categories.html',
+            controller: 'allCategoriesController'
           }
         }
       })
@@ -22,66 +22,63 @@ angular.module('app.routes', ['ionicUIRouter'])
       .state('tabsController.home', {
         url: '/home',
         views: {
-          'tab1': {
+          'home': {
             templateUrl: 'templates/home.html',
-            controller: 'homeCtrl'
+            controller: 'homeController'
           }
         }
       })
 
-      .state('tabsController.eu', {
-        url: '/eu-page',
+      .state('tabsController.profile', {
+        url: '/profile',
         views: {
-          'tab4': {
-            templateUrl: 'templates/eu.html',
-            controller: 'euCtrl'
+          'profile': {
+            templateUrl: 'templates/profile.html',
+            controller: 'profileController'
           }
         }
       })
 
       .state('tabsController', {
-        url: '/page1',
-        templateUrl: 'templates/tabsController.html',
+        url: '/page',
+        templateUrl: 'templates/tabs-controller.html',
         abstract: true
       })
 
-      .state('login', {
-        url: '/sing-in',
-        templateUrl: 'templates/login.html',
-        controller: 'loginCtrl'
+      .state('signIn', {
+        url: '/sign-in',
+        templateUrl: 'templates/sign-in.html',
+        controller: 'signInController'
       })
 
-      .state('registrarSe', {
+      .state('signUp', {
         url: '/sing-up',
-            templateUrl: 'templates/registrarSe.html',
-            controller: 'registrarSeCtrl'
+        templateUrl: 'templates/sign-up.html',
+        controller: 'signUpController'
       })
 
-      .state('configuraEs', {
+      .state('settings', {
         url: '/settings',
-        templateUrl: 'templates/configuraEs.html',
-        controller: 'configuraEsCtrl'
+        templateUrl: 'templates/settings.html',
+        controller: 'settingsController'
       })
 
-      .state('buscarPratosERestaurantes', {
-        url: '/buscar-pratos-restaurantes',
-            templateUrl: 'templates/buscarPratosERestaurantes.html',
-            controller: 'buscarPratosERestaurantesCtrl'
+      .state('searchByProduct', {
+        url: '/search-by-product',
+        templateUrl: 'templates/search-by-product.html',
+        controller: 'searchByProductController'
       })
 
-      .state('meuCarrinho', {
-    url: '/carrinho',
+      .state('shoppingCart', {
+        url: '/shopping-cart',
+        templateUrl: 'templates/shopping-cart.html',
+        controller: 'shoppingCartController'
+      })
 
-        templateUrl: 'templates/meuCarrinho.html',
-        controller: 'meuCarrinhoCtrl'
-
-  })
-
-
-      .state('pagamento', {
-        url: '/pagamento',
-        templateUrl: 'templates/pagamento.html',
-        controller: 'pagamentoCtrl'
+      .state('detailIsPayment', {
+        url: '/detail-is-payment',
+        templateUrl: 'templates/detail-is-payment.html',
+        controller: 'detailIsPaymentController'
 
       })
 
@@ -92,19 +89,19 @@ angular.module('app.routes', ['ionicUIRouter'])
 
       })
 
-       .state('categoria', {
-        url: '/peoduto-categoria:urlId',
-            templateUrl: 'templates/categoria.html',
-            controller: 'categoriaCtrl'
+      .state('productCategory', {
+        url: '/product-category:urlId',
+        templateUrl: 'templates/product-category.html',
+        controller: 'productCategoryController'
       })
 
-      .state('detalheDoProduto', {
-        url: '/detalhe-produto',
-            templateUrl: 'templates/detalheDoProduto.html',
-            controller: 'detalheDoProdutoCtrl'
+      .state('productDetail', {
+        url: '/product-detail',
+        templateUrl: 'templates/product-detail.html',
+        controller: 'productDetailController'
       })
 
-    $urlRouterProvider.otherwise('/sing-in');
+    $urlRouterProvider.otherwise('/sign-in');
 
 
   });
