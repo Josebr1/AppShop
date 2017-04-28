@@ -96,7 +96,7 @@ angular.module('app.routes', ['ionicUIRouter'])
       })
 
       .state('productDetail', {
-        url: '/product-detail',
+        url: '/product-detail:idProduto',
         templateUrl: 'templates/product-detail.html',
         controller: 'productDetailController'
       })

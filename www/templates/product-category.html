@@ -1,10 +1,12 @@
-<ion-view title="Categoria" id="product-category">
+<ion-view title="Produtos" id="product-category">
   <ion-content padding="true" class="has-header">
-    <ion-item ng-repeat="produto	in	produtos" class="item-thumbnail-left" ui-sref="productDetail">
-      <img ng-src="{{produto.foto}}" style="object-fit:	cover">
-      <h2>{{produto.nome}}</h2>
-      <p>{{produto.preco}}</p>
-    </ion-item>
+    <ion-list>
+      <ion-item ng-repeat="produto	in	produtos" class="item-thumbnail-left"
+                ui-sref="productDetail({idProduto: '{{produto.id}}'})">
+        <img ng-src="{{produto.foto}}" style="object-fit:	cover">
+        <h2>{{produto.nome}}</h2>
+        <p>{{produto.preco}}</p>
+      </ion-item>
     </ion-list>
   </ion-content>
 </ion-view>

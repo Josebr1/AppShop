@@ -1,31 +1,27 @@
 <ion-view title="Detalhe do produto" id="product-detail">
 
-  <ion-content padding="true" class="has-header">
-    <div class="list card" id="detalheDoProduto-card21">
+  <ion-content padding="true" class="has-header" >
+    <div class="list card">
 
-      <ion-item>Name</ion-item>
+      <ion-item>{{produto.nome}}</ion-item>
 
       <div class="style-card-img">
         <i class="icon ion-image img-card"></i>
+        <img src="{{produto.foto}}" style="width: 100%; height: 100%">
       </div>
 
       <div class="item item-body">
 
         <h2 class="text-title"><strong>Preço</strong></h2>
         <div class="show-list-numbers-and-dots">
-          <p style="margin-top:0px;color:#000000;">R$ 10,80</p>
+          <p style="margin-top:0px;color:#000000;">R$ {{produto.preco}}</p>
         </div>
 
         <h2 class="text-title"><strong>Descrição</strong></h2>
         <div class="show-list-numbers-and-dots">
-          <p style="color:#000000;">Some friendly
-            <strong>markdown</strong>
+          <p style="color:#000000;">
+            {{produto.descricao}}
           </p>
-        </div>
-
-        <h2 class="text-title"><strong>Valor entrega</strong></h2>
-        <div class="show-list-numbers-and-dots">
-          <p style="color:#000000;">R$ 3,00</p>
         </div>
 
         <form id="product-quantity" class="list">

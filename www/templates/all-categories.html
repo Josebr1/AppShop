@@ -1,28 +1,12 @@
-<ion-view title="Todas as Categorias" id="all-categories" style="">
+<ion-view title="Categoria" id="product-category">
   <ion-content padding="true" class="has-header">
-
-    <a ui-sref="searchByProduct" class="button button-assertive  button-block button-outline">Buscar pratos e restaurantes</a>
-
     <ion-list>
-
-      <ion-item class="item-avatar" ui-sref="productCategory({urlId: 'http://etprogramador.ga/lanche.json'})" >
-        <img src="img/icon-snacks.png">
-        <h2>Lanches</h2>
+      <ion-item ng-repeat="categoria	in	categorias" class="item-thumbnail-left"
+                ui-sref="productCategory({urlId: '{{categoria.id}}'})">
+        <img ng-src="{{categoria.icone}}" style="object-fit:	cover">
+        <h2>{{categoria.nome}}</h2>
+        <p>{{categoria.descricao}}</p>
       </ion-item>
-
-      <ion-item class="item-avatar">
-        <img src="img/icon-pizzas.png">
-        <h2>Pizzas</h2>
-      </ion-item>
-
-      <ion-item class="item-avatar" ui-sref="productCategory({urlId: 'http://etprogramador.ga/japonesa.json'})">
-        <img src="img/icon-japanese-food.png">
-        <h2>Japonesa</h2>
-      </ion-item>
-
-      <ion-item class="item-icon-left">
-        <i class="icon ion-ios-location"></i>Próximos</ion-item>
-
     </ion-list>
   </ion-content>
 </ion-view>
