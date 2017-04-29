@@ -25,9 +25,21 @@ angular.module('app.controllers', ['ionic.cloud'])
 
     }])
 
-  .controller('signInController', ['$scope', '$stateParams',
-    function ($scope, $stateParams) {
+  .controller('signInController', ['$scope', '$stateParams', '$ionicAuth',
+    function ($scope, $stateParams, $ionicAuth) {
 
+      $scope.data = {};
+
+      $scope.signIn = function () {
+
+        var details = {'email': $scope.data.email, 'password': $scope.data.password};
+
+        $ionicAuth.login('basic', details).then(function () {
+          console.log("Ok");
+        }, function (err) {
+          console.log("Erro" + err);
+        })
+      }
 
     }])
 
@@ -35,7 +47,27 @@ angular.module('app.controllers', ['ionic.cloud'])
     function ($scope, $stateParams, $ionicAuth, $ionicUser) {
 
 
-    var details = {};
+      $scope.data = {};
+
+      $scope.signUp = function () {
+
+        var details = {'name': $scope.data.name, 'email': $scope.data.email, 'password': $scope.data.password};
+
+        console.log($scope.data.name);
+
+        $ionicAuth.signup(details).then(function () {
+
+          $ionicUser.details.name = $scope.data.name;
+          $ionicUser.details.email = $scope.data.email;
+          $ionicUser.details.password = $scope.data.password;
+
+          $ionicUser.save();
+          console.log("Ok");
+        }, function (err) {
+          console.log("Erro" + err);
+        });
+
+      };
 
 
     }])
@@ -188,7 +220,7 @@ angular.module('app.controllers', ['ionic.cloud'])
       });
 
       var code = $stateParams.codeZip;
-      var url = "https://viacep.com.br/ws/"+ code +"/json/";
+      var url = "https://viacep.com.br/ws/" + code + "/json/";
 
       $ionicLoading.show();
 

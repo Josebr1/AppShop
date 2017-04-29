@@ -7,29 +7,29 @@
 
         <button id="button-sing-facebook" class="button button-positive  button-block">Sing Up Facebook</button>
 
-        <label class="item item-input item-floating-label" id="input-name" ng-model="details.name" required>
+        <label class="item item-input item-floating-label" id="input-name">
           <span class="input-label">Nome</span>
-          <input placeholder="Nome" type="text">
+          <input placeholder="Nome" type="text" ng-model="data.name" required>
         </label>
 
-        <label class="item item-input item-floating-label" id="input-tel" ng-model="details.tel" required>
+        <label class="item item-input item-floating-label" id="input-tel">
           <span class="input-label">Telefone</span>
-          <input placeholder="Telefone" type="password">
+          <input placeholder="Telefone" type="tel" ng-model="data.tel" required>
         </label>
 
-        <label class="item item-input item-floating-label" id="input-email" ng-model="details.email" required>
+        <label class="item item-input item-floating-label" id="input-email">
           <span class="input-label">E-Mail</span>
-          <input placeholder="E-Mail" type="email">
+          <input placeholder="E-Mail" type="email" ng-model="data.email" required>
         </label>
 
-        <label class="item item-input item-floating-label" id="input-senha" name="senha">
+        <label class="item item-input item-floating-label" id="input-password">
           <span class="input-label">Senha</span>
-          <input placeholder="Senha" type="password">
+          <input placeholder="Senha" type="password" ng-model="data.password">
         </label>
 
 
 
-        <button id="button-sing-email" class="button button-positive  button-block button-outline" ng-disabled="singUp.$invalid">Sing Up</button>
+        <button id="button-sing-email" class="button button-positive  button-block button-outline" ng-disabled="singUp.$invalid" ng-click="signUp()">Sing Up</button>
 
       </form>
     </div>

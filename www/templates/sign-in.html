@@ -3,25 +3,25 @@
 
     <div class="list card">
       <div class="item item-body">
-        <form id="login" class="list">
+        <form id="login" name="login" class="list">
 
           <button id="login-button3" class="button button-positive  button-block icon-left ion-social-facebook-outline">Facebook</button>
 
           <div class="spacer"></div>
 
-          <label class="item item-input item-floating-label" name="email">
+          <label class="item item-input item-floating-label" id="input-email">
             <span class="input-label">E-Mail</span>
-            <input placeholder="E-Mail" type="email">
+            <input placeholder="E-Mail" type="email" ng-model="data.email" required>
           </label>
 
-          <label class="item item-input item-floating-label" name="senha">
+          <label class="item item-input item-floating-label" id="input-password">
             <span class="input-label">Senha</span>
-            <input placeholder="Senha" type="password">
+            <input placeholder="Senha" type="password" ng-model="data.password">
           </label>
 
           <div class="spacer"></div>
 
-          <a ui-sref="tabsController.home" class="button button-positive  button-block button-outline icon-left ion-log-in">Sign in</a>
+          <a ui-sref="tabsController.home" class="button button-positive  button-block button-outline icon-left ion-log-in" ng-disabled="login.$invalid" ng-click="signIn()">Sign in</a>
           <a ui-sref="signUp" class="button button-positive  button-clear">Registrar-se</a>
 
         </form>
