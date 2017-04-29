@@ -1,4 +1,4 @@
-angular.module('app.controllers', [])
+angular.module('app.controllers', ['ionic.cloud'])
 
   .controller('allCategoriesController', ['factoryService', '$scope', '$stateParams', '$ionicLoading',
     function (factoryService, $scope, $stateParams, $ionicLoading) {
@@ -31,8 +31,11 @@ angular.module('app.controllers', [])
 
     }])
 
-  .controller('signUpController', ['$scope', '$stateParams',
-    function ($scope, $stateParams) {
+  .controller('signUpController', ['$scope', '$stateParams', '$ionicAuth', '$ionicUser',
+    function ($scope, $stateParams, $ionicAuth, $ionicUser) {
+
+
+    var details = {};
 
 
     }])

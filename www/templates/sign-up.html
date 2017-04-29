@@ -3,11 +3,21 @@
 <ion-content padding="true" class="has-header">
   <div class="list card" id="registrarSe-card23">
     <div class="item item-body" id="registrarSe-list-item-container5" style="">
-      <form id="sing-up" class="list">
+      <form id="sing-up" name="singUp" class="list">
 
         <button id="button-sing-facebook" class="button button-positive  button-block">Sing Up Facebook</button>
 
-        <label class="item item-input item-floating-label" id="input-email" name="email">
+        <label class="item item-input item-floating-label" id="input-name" ng-model="details.name" required>
+          <span class="input-label">Nome</span>
+          <input placeholder="Nome" type="text">
+        </label>
+
+        <label class="item item-input item-floating-label" id="input-tel" ng-model="details.tel" required>
+          <span class="input-label">Telefone</span>
+          <input placeholder="Telefone" type="password">
+        </label>
+
+        <label class="item item-input item-floating-label" id="input-email" ng-model="details.email" required>
           <span class="input-label">E-Mail</span>
           <input placeholder="E-Mail" type="email">
         </label>
@@ -17,7 +27,9 @@
           <input placeholder="Senha" type="password">
         </label>
 
-        <button id="button-sing-email" class="button button-positive  button-block button-outline">Sing Up</button>
+
+
+        <button id="button-sing-email" class="button button-positive  button-block button-outline" ng-disabled="singUp.$invalid">Sing Up</button>
 
       </form>
     </div>
