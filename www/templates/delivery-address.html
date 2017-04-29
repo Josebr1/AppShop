@@ -1,0 +1,48 @@
+<ion-view title="Endereço de Entrega" id="delivery-address">
+  <ion-content padding="true" class="has-header">
+
+    <ion-list>
+      <ion-item class="item-icon-left">
+        <i class="icon ion-ios-location"></i>Endereço de entrega
+      </ion-item>
+
+      <form id="address" class="list">
+
+        <label class="item item-input" id="street">
+          <span class="input-label">Rua</span>
+          <input placeholder="" type="text" ng-model="dados.street">
+        </label>
+
+        <label class="item item-input" id="number">
+          <span class="input-label">N°</span>
+          <input placeholder="" type="number" ng-model="dados.number">
+        </label>
+
+        <label class="item item-input" id="neighborhood" >
+          <span class="input-label">Bairro</span>
+          <input placeholder="" type="text" ng-model="dados.neighborhood">
+        </label>
+
+        <label class="item item-input" id="code" >
+          <span class="input-label">CEP</span>
+          <input placeholder="" type="number" ng-model="dados.code">
+        </label>
+
+      </form>
+    </ion-list>
+
+    <div class="list card">
+      <div class="item item-body">
+        <ion-list>
+          <ion-item class="item-icon-left">
+            <i class="icon ion-android-cart"></i>Pedido
+          </ion-item>
+        </ion-list>
+        <h2 style="color: rgb(0, 0, 0);">Total</h2>
+        <h2 style="color: rgb(41, 233, 36);">R$ 37,00</h2>
+      </div>
+    </div>
+    <a id="finalize-payment" class="button button-assertive  button-block icon-right ion-android-checkmark-circle"
+       ng-click="finalizePayment()">FAZER PEDIDO</a>
+  </ion-content>
+</ion-view>

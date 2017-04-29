@@ -82,10 +82,10 @@ angular.module('app.routes', ['ionicUIRouter'])
 
       })
 
-      .state('pedidoFinalizado', {
-        url: '/pedido-finalizado',
-        templateUrl: 'templates/pedidoFinalizado.html',
-        controller: 'pedidoFinalizadoCtrl'
+      .state('deliveryAddress', {
+        url: '/delivery-address',
+        templateUrl: 'templates/delivery-address.html',
+        controller: 'deliveryAddressController'
 
       })
 

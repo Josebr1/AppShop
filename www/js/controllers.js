@@ -64,26 +64,62 @@ angular.module('app.controllers', [])
 
     }])
 
-  .controller('detailIsPaymentController', ['$scope', '$stateParams', '$ionicPopup', '$state', '$ionicHistory',
+  .controller('deliveryAddressController', ['$scope', '$stateParams', '$ionicPopup', '$state', '$ionicHistory',
     function ($scope, $stateParams, $ionicPopup, $state, $ionicHistory) {
 
-      $scope.finalizePayment = function () {
-        $ionicPopup.alert({
-          title: 'Pedido confirmado!',
-          template: 'Daqui a pouco chega :)'
-        }).then(function () {
-          //$state.go('tabsController.home', {}, {reload: true});
-          $ionicHistory.clearCache().then(function () {
-            $state.go('tabsController.home', {}, {reload: true});
-          });
-        });
+      $scope.dados = {};
+
+
+      $scope.finalizePayment = function() {
+        var service = new google.maps.DistanceMatrixService();
+
+          service.getDistanceMatrix({
+
+          origins: [$scope.dados.street + " " + $scope.dados.neighborhood],
+          destinations: ["Etec da zona leste"],
+          travelMode: google.maps.TravelMode.DRIVING,
+          unitSystem: google.maps.UnitSystem.METRIC
+
+        }, callback);
       };
+
+      function callback(response, status) {
+        var kmString = response.rows[0].elements[0].distance.text;
+        var km = kmString.replace("km", "");
+
+        console.log(km);
+
+        if(status !== google.maps.DistanceMatrixStatus.OK){
+          console.log("Error");
+        }else{
+          if(parseInt(km) <= 10){
+            console.log("Ok");
+            $ionicPopup.alert({
+              title: "Distancia OK",
+              template: 'Daqui a pouco chega :)'
+            }).then(function () {
+              //$state.go('tabsController.home', {}, {reload: true});
+              $ionicHistory.clearCache().then(function () {
+                $state.go('detailIsPayment', {}, {reload: true});
+              });
+            });
+          }else{
+            console.log("Não");
+            $ionicPopup.alert({
+              title: "Atenção",
+              template: 'Infelizmente o endereço de entrega não se encontra no limite especificado :)'
+            }).then(function () {
+              //$state.go('tabsController.home', {}, {reload: true});
+                $state.go('tabsController.home', {}, {reload: true});
+            });
+          }
+        }
+      }
 
     }])
 
-  .controller('pedidoFinalizadoCtrl', ['$scope', '$stateParams',
+  .controller('detailIsPaymentController', ['$scope', '$stateParams',
     function ($scope, $stateParams) {
-
 
     }])
 
