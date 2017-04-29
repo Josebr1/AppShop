@@ -1,0 +1,22 @@
+<ion-view title="Verificar código postal" id="delivery-address">
+  <ion-content padding="true" class="has-header">
+
+    <ion-list>
+      <ion-item class="item-icon-left">
+        <i class="icon ion-ios-location"></i>Endereço de entrega
+      </ion-item>
+
+      <form id="address" class="list">
+
+        <label class="item item-input" id="code" >
+          <span class="input-label">CEP</span>
+          <input placeholder="" type="text" ng-model="dados.code">
+        </label>
+
+      </form>
+    </ion-list>
+
+    <a id="finalize-payment" class="button button-assertive  button-block icon-right ion-android-checkmark-circle"
+       ng-click="verifyZipCode()">Verificar disponibilidade de entrega</a>
+  </ion-content>
+</ion-view>

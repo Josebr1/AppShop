@@ -83,7 +83,7 @@ angular.module('app.routes', ['ionicUIRouter'])
       })
 
       .state('deliveryAddress', {
-        url: '/delivery-address',
+        url: '/delivery-address:codeZip',
         templateUrl: 'templates/delivery-address.html',
         controller: 'deliveryAddressController'
 
@@ -100,6 +100,12 @@ angular.module('app.routes', ['ionicUIRouter'])
         templateUrl: 'templates/product-detail.html',
         controller: 'productDetailController'
       })
+
+      .state('verifyZipCode', {
+        url: '/verify-zip-code',
+        templateUrl: 'templates/verify-zip-code.html',
+        controller: 'verifyZipCodeController'
+      });
 
     $urlRouterProvider.otherwise('/sign-in');
 

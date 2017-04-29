@@ -1,6 +1,19 @@
 <ion-view title="Endereço de Entrega" id="delivery-address">
   <ion-content padding="true" class="has-header">
 
+    <div class="list card">
+      <div class="item item-body">
+        <ion-list>
+          <ion-item class="item-icon-left">
+            <i class="icon ion-card"></i>Pague na entrega
+          </ion-item>
+          <ion-radio id="pagamento-radio7">Cartão de débito/crédito</ion-radio>
+          <ion-radio id="pagamento-radio8">Dinheiro</ion-radio>
+          <ion-radio id="pagamento-radio9">Vale refeição</ion-radio>
+        </ion-list>
+      </div>
+    </div>
+
     <ion-list>
       <ion-item class="item-icon-left">
         <i class="icon ion-ios-location"></i>Endereço de entrega
@@ -10,22 +23,22 @@
 
         <label class="item item-input" id="street">
           <span class="input-label">Rua</span>
-          <input placeholder="" type="text" ng-model="dados.street">
+          <input placeholder="" type="text" ng-model="street">
         </label>
 
-        <label class="item item-input" id="number">
+        <label class="item item-input" id="number" value="dasdas">
           <span class="input-label">N°</span>
-          <input placeholder="" type="number" ng-model="dados.number">
+          <input placeholder="" type="number" ng-model="number">
         </label>
 
         <label class="item item-input" id="neighborhood" >
           <span class="input-label">Bairro</span>
-          <input placeholder="" type="text" ng-model="dados.neighborhood">
+          <input placeholder="" type="text" ng-model="neighborhood">
         </label>
 
         <label class="item item-input" id="code" >
           <span class="input-label">CEP</span>
-          <input placeholder="" type="number" ng-model="dados.code">
+          <input placeholder="" type="text" ng-model="code">
         </label>
 
       </form>
