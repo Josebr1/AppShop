@@ -13,16 +13,17 @@ angular.module('app.controllers', ['ionic.cloud'])
       })
     }])
 
-  .controller('homeController', ['$scope', '$stateParams',
-    function ($scope, $stateParams) {
+  .controller('homeController', ['$scope', '$stateParams', '$ionicUser',
+    function ($scope, $stateParams, $ionicUser) {
 
+      $ionicUser.set('birthdate', '5/17/1985');
 
     }])
 
-  .controller('profileController', ['$scope', '$stateParams',
-    function ($scope, $stateParams) {
+  .controller('profileController', ['$scope', '$stateParams', '$ionicUser',
+    function ($scope, $stateParams, $ionicUser) {
 
-
+      console.log($ionicUser.get('birthdate'));
     }])
 
   .controller('signInController', ['$scope', '$stateParams', '$ionicAuth',
@@ -250,7 +251,14 @@ angular.module('app.controllers', ['ionic.cloud'])
         }).then(function () {
           //$state.go('tabsController.home', {}, {reload: true});
           $ionicHistory.clearCache().then(function () {
-            $state.go('tabsController.home', {}, {reload: true});
+            $ionicHistory.clearHistory();
+            $state.go('tabsController.home');
+
+            $ionicHistory.nextViewOptions({
+              disableAnimate: true,
+              disableBack: true
+            });
+
           });
         });
       }
