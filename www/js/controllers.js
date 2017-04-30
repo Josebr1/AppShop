@@ -23,34 +23,63 @@ angular.module('app.controllers', ['ionic.cloud'])
   .controller('profileController', ['$scope', '$stateParams', '$ionicUser',
     function ($scope, $stateParams, $ionicUser) {
 
-      console.log($ionicUser.get('birthdate'));
+      $scope.dados = {};
+
+      $scope.dados.nome = $ionicUser.details.name;
+      $scope.dados.email = $ionicUser.details.email;
+
+      console.log($ionicUser.details.name);
     }])
 
-  .controller('signInController', ['$scope', '$stateParams', '$ionicAuth',
-    function ($scope, $stateParams, $ionicAuth) {
+  .controller('signInController', ['$scope', '$stateParams', '$ionicAuth', '$ionicLoading', '$ionicHistory', '$state', '$ionicPopup',
+    function ($scope, $stateParams, $ionicAuth, $ionicLoading, $ionicHistory, $state, $ionicPopup) {
 
       $scope.data = {};
 
       $scope.signIn = function () {
+        $ionicLoading.show();
 
         var details = {'email': $scope.data.email, 'password': $scope.data.password};
 
         $ionicAuth.login('basic', details).then(function () {
           console.log("Ok");
+          $ionicLoading.hide();
+
+          // Gravando o usuario logado
+          var storage = window.localStorage;
+          storage.setItem("logado", true);
+
+          $ionicHistory.clearCache().then(function () {
+            $ionicHistory.clearHistory();
+            $state.go('tabsController.home');
+
+            $ionicHistory.nextViewOptions({
+              disableAnimate: true,
+              disableBack: true
+            });
+
+          });
+
         }, function (err) {
           console.log("Erro" + err);
+          $ionicLoading.hide();
+          $ionicPopup.alert({
+            title: 'Atenção',
+            template: 'Email ou senha incorretos'
+          });
         })
       }
 
     }])
 
-  .controller('signUpController', ['$scope', '$stateParams', '$ionicAuth', '$ionicUser',
-    function ($scope, $stateParams, $ionicAuth, $ionicUser) {
-
+  .controller('signUpController', ['$scope', '$stateParams', '$ionicAuth', '$ionicUser', '$ionicLoading', '$ionicHistory', '$state', '$ionicPopup',
+    function ($scope, $stateParams, $ionicAuth, $ionicUser, $ionicLoading, $ionicHistory, $state, $ionicPopup) {
 
       $scope.data = {};
 
       $scope.signUp = function () {
+
+        $ionicLoading.show();
 
         var details = {'name': $scope.data.name, 'email': $scope.data.email, 'password': $scope.data.password};
 
@@ -58,14 +87,34 @@ angular.module('app.controllers', ['ionic.cloud'])
 
         $ionicAuth.signup(details).then(function () {
 
-          $ionicUser.details.name = $scope.data.name;
-          $ionicUser.details.email = $scope.data.email;
-          $ionicUser.details.password = $scope.data.password;
+          $ionicLoading.hide();
 
-          $ionicUser.save();
+          $ionicPopup.alert({
+            title: 'Atenção',
+            template: 'Usuário criado com sucesso!'
+          });
+
+          $ionicHistory.clearCache().then(function () {
+            $ionicHistory.clearHistory();
+            $state.go('signIn');
+
+            $ionicHistory.nextViewOptions({
+              disableAnimate: true,
+              disableBack: true
+            });
+
+          });
           console.log("Ok");
         }, function (err) {
           console.log("Erro" + err);
+
+          $ionicPopup.alert({
+            title: 'Atenção',
+            template: 'Erro na criação do usuário'
+          });
+
+
+          $ionicLoading.hide();
         });
 
       };
@@ -73,12 +122,44 @@ angular.module('app.controllers', ['ionic.cloud'])
 
     }])
 
-  .controller('settingsController', ['$scope', '$stateParams',
-    function ($scope, $stateParams) {
+  .controller('settingsController', ['$scope', '$stateParams', '$ionicPopup', '$ionicAuth', '$ionicHistory', '$state',
+    function ($scope, $stateParams, $ionicPopup, $ionicAuth, $ionicHistory, $state) {
 
       $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
         viewData.enableBack = true;
       });
+
+      // A confirm dialog
+      $scope.showConfirm = function () {
+        var confirmPopup = $ionicPopup.confirm({
+          title: 'Atenção',
+          template: 'Deseja realmente sair?'
+        });
+
+        confirmPopup.then(function (res) {
+          if (res) {
+            console.log('You are sure');
+            $ionicAuth.logout();
+
+            var storage = window.localStorage;
+            storage.removeItem("logado")
+
+            $ionicHistory.clearCache().then(function () {
+              $ionicHistory.clearHistory();
+              $state.go('signIn');
+
+              $ionicHistory.nextViewOptions({
+                disableAnimate: true,
+                disableBack: true
+              });
+
+            });
+
+          } else {
+            console.log('You are not sure');
+          }
+        });
+      };
 
     }])
 

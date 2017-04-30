@@ -107,7 +107,18 @@ angular.module('app.routes', ['ionicUIRouter'])
         controller: 'verifyZipCodeController'
       });
 
-    $urlRouterProvider.otherwise('/sign-in');
+    $urlRouterProvider.otherwise(function($injector, $location){
+      var state = $injector.get('$state');
 
+      var storage = window.localStorage;
+      console.log(storage.getItem("logado"));
 
+      if(storage.getItem("logado")){
+        state.go('tabsController.home');
+      }else{
+        console.log(storage.getItem("logado"));
+        state.go('signIn');
+      }
+      return $location.path();
+    });
   });

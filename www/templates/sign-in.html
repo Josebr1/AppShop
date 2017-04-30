@@ -16,12 +16,12 @@
 
           <label class="item item-input item-floating-label" id="input-password">
             <span class="input-label">Senha</span>
-            <input placeholder="Senha" type="password" ng-model="data.password">
+            <input placeholder="Senha" type="password" ng-model="data.password" required>
           </label>
 
           <div class="spacer"></div>
 
-          <a ui-sref="tabsController.home" class="button button-positive  button-block button-outline icon-left ion-log-in" ng-disabled="login.$invalid" ng-click="signIn()">Sign in</a>
+          <a class="button button-positive  button-block button-outline icon-left ion-log-in" ng-disabled="login.$invalid" ng-click="signIn()">Sign in</a>
           <a ui-sref="signUp" class="button button-positive  button-clear">Registrar-se</a>
 
         </form>
