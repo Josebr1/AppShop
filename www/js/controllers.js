@@ -142,7 +142,7 @@ angular.module('app.controllers', ['ionic.cloud'])
             $ionicAuth.logout();
 
             var storage = window.localStorage;
-            storage.removeItem("logado")
+            storage.removeItem("logado");
 
             $ionicHistory.clearCache().then(function () {
               $ionicHistory.clearHistory();
@@ -172,12 +172,60 @@ angular.module('app.controllers', ['ionic.cloud'])
 
     }])
 
-  .controller('shoppingCartController', ['$scope', '$stateParams',
-    function ($scope, $stateParams) {
+  .controller('shoppingCartController', ['sharedCartService', '$scope', '$stateParams', '$state', '$ionicPopup',
+    function (sharedCartService, $scope, $stateParams, $state, $ionicPopup) {
 
+//onload event-- to set the values
       $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
         viewData.enableBack = true;
+        $scope.cart = sharedCartService.cart;
+        $scope.total_qty = sharedCartService.total_qty;
+        $scope.total_amount = parseFloat(sharedCartService.total_amount);
       });
+
+      //remove function
+      $scope.removeFromCart = function (c_id) {
+        $scope.cart.drop(c_id);
+        $scope.total_qty = sharedCartService.total_qty;
+        $scope.total_amount = sharedCartService.total_amount;
+
+      };
+
+      $scope.inc = function (c_id) {
+        $scope.cart.increment(c_id);
+        $scope.total_qty = sharedCartService.total_qty;
+        $scope.total_amount = sharedCartService.total_amount;
+      };
+
+      $scope.dec = function (c_id) {
+        $scope.cart.decrement(c_id);
+        $scope.total_qty = sharedCartService.total_qty;
+        $scope.total_amount = sharedCartService.total_amount;
+      };
+
+      $scope.verifyZipCode = function () {
+        if ($scope.total_amount > 0 && $scope.total_qty > 0) {
+          var pedido = "";
+          for (var i = 0, len = $scope.cart.length; i < len; i++) {
+            console.log($scope.cart[i].cart_item_id);
+            pedido += "Produto: " + $scope.cart[i].cart_item_name + " Descrição: " + $scope.cart[i].cart_item_desc + " Quantidade: " + $scope.cart[i].cart_item_qty + "\n";
+          }
+          console.log(pedido);
+          console.log($scope.total_amount);
+
+          // Gravando o pedido do usuario logado
+          var storage = window.localStorage;
+          storage.setItem("pedido", pedido);
+          storage.setItem("valorPeido", $scope.total_amount);
+          $state.go('verifyZipCode');
+        }
+        else {
+          var alertPopup = $ionicPopup.alert({
+            title: 'No item in your Cart',
+            template: 'Please add Some Items!'
+          });
+        }
+      };
 
     }])
 
@@ -270,8 +318,11 @@ angular.module('app.controllers', ['ionic.cloud'])
 
     }])
 
-  .controller('productDetailController', ['factoryService', '$scope', '$stateParams', '$ionicLoading',
-    function (factoryService, $scope, $stateParams, $ionicLoading) {
+  .controller('productDetailController', ['sharedCartService', 'factoryService', '$scope', '$stateParams', '$ionicLoading',
+    function (sharedCartService, factoryService, $scope, $stateParams, $ionicLoading) {
+
+      //put cart after menu
+      var cart = sharedCartService.cart;
 
       $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
         viewData.enableBack = true;
@@ -280,6 +331,8 @@ angular.module('app.controllers', ['ionic.cloud'])
       var id = $stateParams.idProduto;
       var url = "http://localhost:8080/appshop/rest/produto/" + id;
       $ionicLoading.show();
+
+      console.log(cart);
 
       console.log("HTTP");
       console.log(url);
@@ -290,7 +343,14 @@ angular.module('app.controllers', ['ionic.cloud'])
         console.log(error);
       }).finally(function () {
         $ionicLoading.hide();
-      })
+      });
+
+      /* =============================== */
+
+//add to cart function
+      $scope.addToCart = function (id, image, name, desc, price) {
+        cart.add(id, image, name, desc, price, 1);
+      };
 
     }])
 

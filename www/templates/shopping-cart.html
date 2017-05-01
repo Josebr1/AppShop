@@ -1,40 +1,59 @@
 <ion-view title="Meu Carrinho" id="shopping-cart">
   <ion-content padding="true" class="has-header">
 
-    <div class="list card">
+    <div ng-repeat="item in cart">
+      <div class="list card">
+        <div class="item item-divider">{{item.cart_item_name}}</div>
 
-      <div class="item item-body">
-        <ion-list>
-          <ion-item class="item-thumbnail-left">
-            <h2>Hamburguer</h2>
-          </ion-item>
-        </ion-list>
+        <div class="row">
+          <div class="col">
+            <p>{{item.cart_item_desc}}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <img src="{{item.cart_item_image}}" width="100%" height="auto" style="width: 100%; height: auto;">
+          </div>
+          <div class="col col-75">
+            <div class="row">
+              <div class="col col-33">
+                <button class="button button-stable button-clear button-block button-small icon ion-plus"
+                        ng-click="inc(item.cart_item_id)"></button>
+              </div>
+              <div class="col col-33">
+                <button class="button button-stable button-clear button-block button-small">{{item.cart_item_qty}}
+                </button>
+              </div>
+              <div class="col col-33">
+                <button class="button button-stable button-clear button-block  icon ion-minus"
+                        ng-click="dec(item.cart_item_id)"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <p>Valor Unitário: R${{item.cart_item_price}}</p>
+          </div>
+        </div>
+
       </div>
-
-      <ion-item class="item-icon-left assertive" ui-sref="searchByProduct">
-        <i class="icon ion-android-add"></i>ADICIONAR MAIS ITENS</ion-item>
     </div>
 
     <div class="list card">
       <div class="item item-body">
-
-        <div class="show-list-numbers-and-dots">
-          <p class="text">Taxa de entrega (30 - 45 min)</p>
-        </div>
-
-        <div class="show-list-numbers-and-dots">
-          <p class="text">R$ 7,00</p>
-        </div>
-
         <h2 class="text-bold">Total do pedido</h2>
-
-        <div id="meuCarrinho-markdown19" class="show-list-numbers-and-dots">
-          <p class="text">R$ 14,50</p>
+        <div>
+          <p>Total ( {{total_qty}} ) =
+            <strong>R${{total_amount}}</strong>
+          </p>
         </div>
-
       </div>
     </div>
 
-    <a ui-sref="verifyZipCode" id="payment" class="button button-assertive  button-block icon-right ion-android-arrow-dropright button-payment">VERIFICAR CÓDIGO POSTAL</a>
+    <button ng-click="verifyZipCode()" class="button button-positive button-block ">Check Out</button>
+
   </ion-content>
 </ion-view>

@@ -23,7 +23,7 @@
             {{produto.descricao}}
           </p>
         </div>
-        <a ui-sref="shoppingCart" id="button-buy-products"
+        <a ng-click="addToCart(produto.id, produto.foto, produto.nome, produto.descricao, produto.preco)" id="button-buy-products"
            class="button button-assertive  button-block">Comprar</a>
       </div>
 
