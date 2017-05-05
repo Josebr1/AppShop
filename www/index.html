@@ -3,9 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-  <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://maps.googleapis.com/ https://maps.gstatic.com/ https://mts0.googleapis.com/ 'unsafe-inline' 'unsafe-eval'">
+  <!-- Veridicação de segurança -> Mudança : temperaria -->
+  <meta http-equiv="Content-Security-Policy"
+        content="script-src * https://maps.googleapis.com/ https://maps.gstatic.com/ https://mts0.googleapis.com/ 'unsafe-inline' 'unsafe-eval'">
   <!-- Google Maps -->
-  <script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
+  <script async defer
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZpC1ir3ucZAedwRHoY7rLKRkcKX7JznY&callback=angular.noop"
+          type="text/javascript"></script>
   <title></title>
 
   <script src="lib/ionic/js/ionic.bundle.js"></script>
@@ -72,7 +76,8 @@
 
   <script src="lib/ionicuirouter/ionicUIRouter.js"></script>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+  <!-- Ajax Angular 1.x -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 </head>
 <body ng-app="app" animation="slide-left-right-ios7">
 <div>
