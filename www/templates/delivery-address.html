@@ -7,9 +7,12 @@
           <ion-item class="item-icon-left">
             <i class="icon ion-card"></i>Pague na entrega
           </ion-item>
-          <ion-radio id="pagamento-radio7">Cartão de débito/crédito</ion-radio>
-          <ion-radio id="pagamento-radio8">Dinheiro</ion-radio>
-          <ion-radio id="pagamento-radio9">Vale refeição</ion-radio>
+          <ion-radio ng-repeat="item in pagamentoList"
+                     ng-value="item.value"
+                     ng-model="data.serverSide"
+                     name="server-side">
+            {{ item.text }}
+          </ion-radio>
         </ion-list>
       </div>
     </div>
@@ -19,26 +22,26 @@
         <i class="icon ion-ios-location"></i>Endereço de entrega
       </ion-item>
 
-      <form id="address" class="list">
+      <form id="address" name="address" class="list">
 
         <label class="item item-input" id="street">
           <span class="input-label">Rua</span>
-          <input placeholder="" type="text" ng-model="street">
+          <input placeholder="" type="text" ng-model="street" disabled>
         </label>
 
         <label class="item item-input" id="number" value="dasdas">
           <span class="input-label">N°</span>
-          <input placeholder="" type="number" ng-model="number">
+          <input placeholder="" type="number" ng-model="number" required>
         </label>
 
-        <label class="item item-input" id="neighborhood" >
+        <label class="item item-input" id="neighborhood">
           <span class="input-label">Bairro</span>
-          <input placeholder="" type="text" ng-model="neighborhood">
+          <input placeholder="" type="text" ng-model="neighborhood" disabled>
         </label>
 
-        <label class="item item-input" id="code" >
+        <label class="item item-input" id="code">
           <span class="input-label">CEP</span>
-          <input placeholder="" type="text" ng-model="code">
+          <input placeholder="" type="text" ng-model="code" disabled>
         </label>
 
       </form>
@@ -56,6 +59,6 @@
       </div>
     </div>
     <a id="finalize-payment" class="button button-assertive  button-block icon-right ion-android-checkmark-circle"
-       ng-click="finalizePayment()">FAZER PEDIDO</a>
+       ng-click="finalizePayment()" ng-disabled="address.$invalid" ng-disabled="formaPagamento.$invalid">FAZER PEDIDO</a>
   </ion-content>
 </ion-view>

@@ -31,7 +31,7 @@ angular.module('app.controllers', ['ionic.cloud'])
       if ($ionicUser.details.name !== null) {
         $scope.dados.nome = $ionicUser.details.name;
         $scope.dados.email = $ionicUser.details.email;
-      }else{
+      } else {
         $scope.dados.nome = $ionicUser.social.facebook.data.full_name;
         $scope.dados.email = $ionicUser.social.facebook.data.email;
       }
@@ -56,6 +56,11 @@ angular.module('app.controllers', ['ionic.cloud'])
           // Gravando o usuario logado
           var storage = window.localStorage;
           storage.setItem("logado", true);
+          // Salcando os dados em cache
+          console.log($ionicUser.details.username);
+          storage.setItem("userID", $ionicUser.details.username);
+          storage.setItem("userName", $ionicUser.details.name);
+          storage.setItem("userEmail", $ionicUser.details.email);
 
           // Limpando a pilha de activities
           $ionicHistory.clearCache().then(function () {
@@ -117,6 +122,11 @@ angular.module('app.controllers', ['ionic.cloud'])
                   // Gravando o usuario logado
                   var storage = window.localStorage;
                   storage.setItem("logado", true);
+                  // Salcando os dados em cache
+                  console.log($ionicUser.social.facebook.uid);
+                  storage.setItem("userID", $ionicUser.social.facebook.uid);
+                  storage.setItem("userName", $ionicUser.social.facebook.data.full_name);
+                  storage.setItem("userEmail", $ionicUser.social.facebook.data.email);
                   $ionicLoading.hide();
                 }
 
@@ -471,11 +481,21 @@ angular.module('app.controllers', ['ionic.cloud'])
 
     }])
 
-  .controller('deliveryAddressController', ['factoryService', '$scope', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicHistory', '$state',
-    function (factoryService, $scope, $stateParams, $ionicLoading, $ionicPopup, $ionicHistory, $state) {
+  .controller('deliveryAddressController', ['factoryService', '$scope', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicHistory', '$state', '$http',
+    function (factoryService, $scope, $stateParams, $ionicLoading, $ionicPopup, $ionicHistory, $state, $http) {
 
       $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
         viewData.enableBack = true;
+        $scope.pagamentoList = [
+          {text: "Cartão de débito", value: "debito"},
+          {text: "Cartão de crédito", value: "credito"},
+          {text: "Dinheiro", value: "dinheiro"},
+          {text: "Vale Refeição", value: "refeicao"}
+        ];
+
+        $scope.data = {
+          clientSide: 'ng'
+        };
       });
 
       var code = $stateParams.codeZip;
@@ -503,23 +523,65 @@ angular.module('app.controllers', ['ionic.cloud'])
       $scope.finalizePayment = function () {
         console.log("finalizePayment");
 
-        $ionicPopup.alert({
-          title: "Pedido OK",
-          template: 'Daqui a pouco chega :)'
-        }).then(function () {
-          //$state.go('tabsController.home', {}, {reload: true});
-          $ionicHistory.clearCache().then(function () {
-            $ionicHistory.clearHistory();
-            $state.go('tabsController.home');
+        console.log($scope.data.serverSide);
 
-            $ionicHistory.nextViewOptions({
-              disableAnimate: true,
-              disableBack: true
+        if ($scope.data.serverSide === null || $scope.data.serverSide === undefined) {
+          $ionicPopup.alert({
+            title: "Atenção",
+            template: 'Escolha uma forma de pagamento :)'
+          })
+        } else {
+
+          $ionicLoading.show();
+
+          var storage = window.localStorage;
+
+          $scope.pagamento = {};
+
+
+          var params = {
+            'pedido': storage.getItem("pedido"),
+            'endereco': $scope.street + " " + $scope.neighborhood + " " + $scope.code,
+            'valor_total': storage.getItem("valorPeido"),
+            'status': "Item Comprado",
+            'forma_pagamento': $scope.data.serverSide,
+            'user_id': storage.getItem("userID")
+          };
+
+
+          $http.post("http://appshop.etprogramador.ga/public/rest/purchased/add", JSON.stringify(params)).then(function successCallback(response) {
+            console.log("successCallback" + response.data);
+
+            console.log(params);
+
+            $ionicLoading.hide();
+
+            $ionicPopup.alert({
+              title: "Pedido OK",
+              template: 'Daqui a pouco chega :)'
+            }).then(function () {
+              //$state.go('tabsController.home', {}, {reload: true});
+              $ionicHistory.clearCache().then(function () {
+                $ionicHistory.clearHistory();
+                $state.go('tabsController.home');
+
+                $ionicHistory.nextViewOptions({
+                  disableAnimate: true,
+                  disableBack: true
+                });
+              });
             });
 
+            // Erro servidor proprio
+          }, function errorCallback(response) {
+            console.log("errorCallback" + response.data + response.status);
+            $ionicLoading.hide();
+            $ionicPopup.alert({
+              title: 'Atenção',
+              template: response.data
+            });
           });
-        });
+        }
       }
-
     }]);
 
