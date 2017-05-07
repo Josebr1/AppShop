@@ -20,14 +20,18 @@
           <img src="img/img-info-profile.png" class="img-info">
         </div>
 
-        <h2 style="color: rgb(0, 0, 0); text-align: center;">Ainda não tem nada aqui.</h2>
-
-        <div id="eu-markdown11" style="text-align:center;" class="show-list-numbers-and-dots">
-          <p style="color:#000000;">Faça seus primeiros pedidos e salve os seus restaurantes prediletos, para começar a
-            exibir recomendações</p>
-        </div>
-
       </div>
+      <ion-list>
+        <ion-item ng-repeat="info	in	infos">
+          <h4>{{info.nome}}</h4>
+          <h5>Informações do pedido:</h5>
+          <p style="white-space: normal; display: block;">{{info.pedido}}</p>
+          <h5>Endereço:</h5>
+          <p>{{info.endereco}}</p>
+          <h5>Status:</h5>
+          <p>{{info.status}}</p>
+        </ion-item>
+      </ion-list>
     </div>
   </ion-content>
 </ion-view>

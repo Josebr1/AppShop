@@ -20,10 +20,12 @@ angular.module('app.controllers', ['ionic.cloud'])
 
     }])
 
-  .controller('profileController', ['$scope', '$stateParams', '$ionicUser',
-    function ($scope, $stateParams, $ionicUser) {
+  .controller('profileController', ['factoryService', '$scope', '$stateParams', '$ionicUser', '$ionicLoading',
+    function (factoryService, $scope, $stateParams, $ionicUser, $ionicLoading) {
 
       $scope.dados = {};
+
+      $ionicLoading.show();
 
       console.log($ionicUser.details.name);
 
@@ -35,6 +37,20 @@ angular.module('app.controllers', ['ionic.cloud'])
         $scope.dados.nome = $ionicUser.social.facebook.data.full_name;
         $scope.dados.email = $ionicUser.social.facebook.data.email;
       }
+
+      var storage = window.localStorage;
+      var id =  storage.getItem("userID");
+      var url = "http://appshop.etprogramador.ga/public/rest/purchased/order/" + id;
+
+      console.log(url);
+
+      factoryService.lista(url).then(function (response) {
+        $scope.infos = response;
+      }, function (error) {
+        console.log(error);
+      }).finally(function () {
+        $ionicLoading.hide();
+      });
 
     }])
 
