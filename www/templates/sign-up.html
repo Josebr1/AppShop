@@ -5,7 +5,10 @@
     <div class="item item-body" id="registrarSe-list-item-container5" style="">
       <form id="sing-up" name="singUp" class="list">
 
-        <button id="button-sing-facebook" class="button button-positive  button-block">Sing Up Facebook</button>
+        <label class="item item-input item-floating-label" id="input-user-name">
+          <span class="input-label">Nome de usuário</span>
+          <input placeholder="Nome de usuário" type="text" ng-model="data.user" required>
+        </label>
 
         <label class="item item-input item-floating-label" id="input-name">
           <span class="input-label">Nome</span>
@@ -29,7 +32,7 @@
 
 
 
-        <button id="button-sing-email" class="button button-positive  button-block button-outline" ng-disabled="singUp.$invalid" ng-click="signUp()">Sing Up</button>
+        <button id="button-sing-email" class="button button-positive  button-block button-outline" ng-disabled="singUp.$invalid" ng-click="signUpLoginIonic()">Sing Up</button>
 
       </form>
     </div>

@@ -76,8 +76,7 @@ angular.module('app.services', [])
       lista: function (url) {
         return $http({
           method: 'GET',
-          url: url,
-          headers: {'Access-Control-Allow-Origin': '*'}
+          url: url
         }).then(function (response) {
           return response.data;
         });

@@ -16,6 +16,11 @@ angular.module('app', ['ionic', 'ionic.cloud', 'app.controllers', 'app.routes', 
     $ionicCloudProvider.init({
       "core": {
         "app_id": "64b42003"
+      },
+      'auth': {
+        'facebook': {
+          'scope': ['email', 'public_profile']
+        }
       }
     });
   })

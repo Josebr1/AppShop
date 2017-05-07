@@ -5,7 +5,7 @@
       <div class="item item-body">
         <form id="login" name="login" class="list">
 
-          <button id="login-button3" class="button button-positive  button-block icon-left ion-social-facebook-outline">Facebook</button>
+          <button id="login-button3" class="button button-positive  button-block icon-left ion-social-facebook-outline" ng-click="signInFacebook()">Facebook</button>
 
           <div class="spacer"></div>
 
@@ -21,7 +21,7 @@
 
           <div class="spacer"></div>
 
-          <a class="button button-positive  button-block button-outline icon-left ion-log-in" ng-disabled="login.$invalid" ng-click="signIn()">Sign in</a>
+          <a class="button button-positive  button-block button-outline icon-left ion-log-in" ng-disabled="login.$invalid" ng-click="signInIonic()">Sign in</a>
           <a ui-sref="signUp" class="button button-positive  button-clear">Registrar-se</a>
 
         </form>
