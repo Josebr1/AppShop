@@ -531,6 +531,8 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
         $scope.total_qty = sharedCartService.total_qty;
         $scope.total_amount = parseFloat(sharedCartService.total_amount);
 
+        $scope.dataNumber = {};
+
       });
 
       var code = $stateParams.codeZip;
@@ -573,9 +575,10 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
 
           $scope.pagamento = {};
 
+
           var params = {
             'pedido': storage.getItem("pedido"),
-            'endereco': $scope.street + " " + $scope.neighborhood + " " + $scope.code,
+            'endereco': $scope.street + " " + $scope.neighborhood + " " + $scope.code + " n° " + $scope.dataNumber.number,
             'valor_total': storage.getItem("valorPeido"),
             'status': "Item Comprado",
             'forma_pagamento': $scope.data.serverSide,
