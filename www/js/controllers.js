@@ -412,38 +412,44 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
       };
 
       function callback(response, status) {
-        var kmString = response.rows[0].elements[0].distance.text;
-        var km = kmString.replace("km", "");
+        try{
+          var kmString = response.rows[0].elements[0].distance.text;
+          var km = kmString.replace("km", "");
 
-        console.log(km);
+          console.log(km);
 
-        if (status !== google.maps.DistanceMatrixStatus.OK) {
-          console.log("Error");
-        } else {
-          if (parseInt(km) <= 10) {
-            console.log("Ok");
-            $ionicPopup.alert({
-              title: "O endereço está no raio de entrega!",
-              template: 'Prosseguindo com a compra.'
-            }).then(function () {
-              //$state.go('tabsController.home', {}, {reload: true});
-              $ionicHistory.clearCache().then(function () {
-                $state.go('deliveryAddress', {"codeZip": $scope.dados.code}, {reload: true});
-              });
-            });
+          if (status !== google.maps.DistanceMatrixStatus.OK) {
+            console.log("Error");
           } else {
-            console.log("Não");
-            $ionicPopup.alert({
-              title: "Atenção",
-              template: 'Infelizmente o endereço de entrega não se encontra no limite especificado :)'
-            }).then(function () {
-              //$state.go('tabsController.home', {}, {reload: true});
-              $state.go('tabsController.home', {}, {reload: true});
-            });
+            if (parseInt(km) <= 10) {
+              console.log("Ok");
+              $ionicPopup.alert({
+                title: "O endereço está no raio de entrega!",
+                template: 'Prosseguindo com a compra.'
+              }).then(function () {
+                //$state.go('tabsController.home', {}, {reload: true});
+                $ionicHistory.clearCache().then(function () {
+                  $state.go('deliveryAddress', {"codeZip": $scope.dados.code}, {reload: true});
+                });
+              });
+            } else {
+              console.log("Não");
+              $ionicPopup.alert({
+                title: "Atenção",
+                template: 'Infelizmente o endereço de entrega não se encontra no limite especificado :)'
+              }).then(function () {
+                //$state.go('tabsController.home', {}, {reload: true});
+                $state.go('tabsController.home', {}, {reload: true});
+              });
+            }
           }
+        }catch(err){
+          $ionicPopup.alert({
+            title: "Atenção",
+            template: 'CEP incorreto'
+          });
         }
       }
-
     }])
 
   .controller('detailIsPaymentController', ['$scope', '$stateParams',
