@@ -1,15 +1,24 @@
 angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
 
-  .controller('allCategoriesController', ['factoryService', '$scope', '$stateParams', '$ionicLoading',
-    function (factoryService, $scope, $stateParams, $ionicLoading) {
+  .controller('allCategoriesController', ['factoryService', '$scope', '$stateParams', '$ionicLoading', '$ionicPopup',
+    function (factoryService, $scope, $stateParams, $ionicLoading, $ionicPopup) {
       var url = "http://appshop.etprogramador.ga/public/rest/category/all";
+
+      $ionicLoading.show();
 
       factoryService.lista(url).then(function (response) {
         $scope.categorias = response;
         console.log("OK");
+        $ionicLoading.hide();
       }, function (error) {
         console.log(error);
+        $ionicPopup.alert({
+          title: 'Atenção',
+          template: error.data
+        });
+        $ionicLoading.hide();
       }).finally(function () {
+        $ionicLoading.hide();
       })
     }])
 
