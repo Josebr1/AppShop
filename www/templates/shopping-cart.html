@@ -5,33 +5,24 @@
       <div class="list card">
         <div class="item item-divider">{{item.cart_item_name}}</div>
 
-        <div class="row">
-          <div class="col">
-            <p>{{item.cart_item_desc}}</p>
-          </div>
-        </div>
+        <ion-item class="item-thumbnail-left">
+          <img src="{{item.cart_item_image}}" style="object-fit:	cover">
 
-        <div class="row">
-          <div class="col">
-            <img src="{{item.cart_item_image}}" width="100%" height="auto" style="width: 100%; height: auto;">
-          </div>
-          <div class="col col-75">
-            <div class="row">
-              <div class="col col-33">
-                <button class="button button-stable button-clear button-block button-small icon ion-plus"
-                        ng-click="inc(item.cart_item_id)"></button>
-              </div>
-              <div class="col col-33">
-                <button class="button button-stable button-clear button-block button-small">{{item.cart_item_qty}}
-                </button>
-              </div>
-              <div class="col col-33">
-                <button class="button button-stable button-clear button-block  icon ion-minus"
-                        ng-click="dec(item.cart_item_id)"></button>
-              </div>
+          <div class="row">
+            <div class="col col-33 padding">
+              <button class="button button-assertive button-default button-bar-inline button-small icon ion-minus center"
+                      ng-click="dec(item.cart_item_id)"></button>
+            </div>
+            <div class="col col-33 padding">
+              <p class="button button-stable button-clear button-block button-small">{{item.cart_item_qty}}
+              </p>
+            </div>
+            <div class="col col-33 padding">
+              <button class="button button-balanced button-default button-bar-inline button-small icon ion-plus center"
+                      ng-click="inc(item.cart_item_id)"></button>
             </div>
           </div>
-        </div>
+        </ion-item>
 
         <div class="row">
           <div class="col">
@@ -53,7 +44,7 @@
       </div>
     </div>
 
-    <button ng-click="verifyZipCode()" class="button button-positive button-block ">Check Out</button>
+    <button ng-click="verifyZipCode()" class="button button-assertive button-block ">Prosseguir com a compra</button>
 
   </ion-content>
 </ion-view>
