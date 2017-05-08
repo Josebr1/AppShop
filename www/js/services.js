@@ -27,6 +27,10 @@ angular.module('app.services', [])
         });
         cartObj.total_qty += 1;
         cartObj.total_amount += parseFloat(price);
+        var alertPopup = $ionicPopup.alert({
+          title: 'Carrinho de compras',
+          template: 'Produto adicionado ao carrinho de compras'
+        });
       }
     };
 
