@@ -594,6 +594,12 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
 
             $ionicLoading.hide();
 
+            // Limpando o carrinho de compras
+            for (var i = 0, len = $scope.cart.length; i < len; i++) {
+              console.log($scope.cart[i].cart_item_id);
+              $scope.cart.drop($scope.cart[i].cart_item_id);
+            }
+
             $ionicPopup.alert({
               title: "Compra realizada com sucesso!",
               template: response.data

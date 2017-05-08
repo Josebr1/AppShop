@@ -50,7 +50,6 @@ angular.module('app.services', [])
       cartObj.total_qty -= parseInt(temp.cart_item_qty);
       cartObj.total_amount -= ( parseFloat(temp.cart_item_qty) * parseFloat(temp.cart_item_price) );
       cartObj.cart.splice(cartObj.cart.find(id), 1);
-
     };
 
     cartObj.cart.increment = function (id) {
