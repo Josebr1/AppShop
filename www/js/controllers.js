@@ -385,7 +385,6 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
 
       $scope.dados = {};
 
-      var codeLength = $scope.dados.code;
       $scope.verifyZipCode = function () {
 
 
@@ -395,7 +394,7 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
 
         service.getDistanceMatrix({
 
-          origins: [0 + $scope.dados.code],
+          origins: [$scope.dados.code],
           destinations: ["Etec da zona leste"],
           travelMode: google.maps.TravelMode.DRIVING,
           unitSystem: google.maps.UnitSystem.METRIC
