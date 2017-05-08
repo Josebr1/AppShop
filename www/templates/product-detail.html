@@ -1,16 +1,13 @@
-<ion-view title="Detalhe do produto" id="product-detail">
+<ion-view title="{{produto.nome}}" id="product-detail">
 
   <ion-content padding="true" class="has-header" >
     <div class="list card">
 
       <ion-item>{{produto.nome}}</ion-item>
 
-      <div class="style-card-img">
-        <i class="icon ion-image img-card"></i>
-        <img src="{{produto.foto}}" style="width: 100%; height: 100%">
-      </div>
-
       <div class="item item-body">
+
+        <img src="{{produto.foto}}"  class="style-card-img">
 
         <h2 class="text-title"><strong>Preço</strong></h2>
         <div class="show-list-numbers-and-dots">
