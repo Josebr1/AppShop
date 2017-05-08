@@ -1,42 +1,44 @@
 <ion-view title="Registrar-se" id="signUp" class="background-sign">
 
-<ion-content padding="true" class="has-header">
-  <div class="list card" id="registrarSe-card23">
-    <div class="item item-body" id="registrarSe-list-item-container5" style="">
-      <form id="sing-up" name="singUp" class="list">
+  <ion-content padding="true" class="has-header">
+    <div class="list card" id="registrarSe-card23">
+      <div class="item item-body" id="registrarSe-list-item-container5" style="">
+        <form id="sing-up" name="singUp" class="list">
 
-        <label class="item item-input item-floating-label" id="input-user-name">
-          <span class="input-label">Nome de usuário</span>
-          <input placeholder="Nome de usuário" type="text" ng-model="data.user" required>
-        </label>
+          <label class="item item-input item-floating-label" id="input-user-name">
+            <span class="input-label">Nome de usuário</span>
+            <input placeholder="Nome de usuário" type="text" ng-model="data.user" required>
+          </label>
 
-        <label class="item item-input item-floating-label" id="input-name">
-          <span class="input-label">Nome</span>
-          <input placeholder="Nome" type="text" ng-model="data.name" required>
-        </label>
+          <label class="item item-input item-floating-label" id="input-name">
+            <span class="input-label">Nome</span>
+            <input placeholder="Nome" type="text" ng-model="data.name" required>
+          </label>
 
-        <label class="item item-input item-floating-label" id="input-tel">
-          <span class="input-label">Telefone</span>
-          <input placeholder="Telefone" type="tel" ng-model="data.tel" required>
-        </label>
+          <label class="item item-input item-floating-label" id="input-tel">
+            <span class="input-label">Telefone</span>
+            <input placeholder="Telefone" type="tel" ng-model="data.tel" minlength="4" maxlength="20" ui-br-phone-number
+                   required>
+          </label>
 
-        <label class="item item-input item-floating-label" id="input-email">
-          <span class="input-label">E-Mail</span>
-          <input placeholder="E-Mail" type="email" ng-model="data.email" required>
-        </label>
+          <label class="item item-input item-floating-label" id="input-email">
+            <span class="input-label">E-Mail</span>
+            <input placeholder="E-Mail" type="email" ng-model="data.email" required>
+          </label>
 
-        <label class="item item-input item-floating-label" id="input-password">
-          <span class="input-label">Senha</span>
-          <input placeholder="Senha" type="password" ng-model="data.password" required>
-        </label>
+          <label class="item item-input item-floating-label" id="input-password">
+            <span class="input-label">Senha</span>
+            <input placeholder="Senha" type="password" ng-model="data.password" required>
+          </label>
 
 
+          <button id="button-sing-email" class="button button-positive  button-block button-outline"
+                  ng-disabled="singUp.$invalid" ng-click="signUpLoginIonic()">Sing Up
+          </button>
 
-        <button id="button-sing-email" class="button button-positive  button-block button-outline" ng-disabled="singUp.$invalid" ng-click="signUpLoginIonic()">Sing Up</button>
-
-      </form>
+        </form>
+      </div>
     </div>
-  </div>
-</ion-content>
+  </ion-content>
 
 </ion-view>
