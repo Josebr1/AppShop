@@ -10,9 +10,8 @@
 
         <label class="item item-input" id="code" >
           <span class="input-label">CEP</span>
-          <input placeholder="" type="text" ng-model="dados.code" required>
+          <input placeholder="" type="text" ng-model="dados.code" maxlength="9" minlength="9" ui-br-cep-mask required>
         </label>
-
       </form>
     </ion-list>
 

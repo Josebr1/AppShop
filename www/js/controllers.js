@@ -1,4 +1,4 @@
-angular.module('app.controllers', ['ionic.cloud'])
+angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
 
   .controller('allCategoriesController', ['factoryService', '$scope', '$stateParams', '$ionicLoading',
     function (factoryService, $scope, $stateParams, $ionicLoading) {
@@ -39,7 +39,7 @@ angular.module('app.controllers', ['ionic.cloud'])
       }
 
       var storage = window.localStorage;
-      var id =  storage.getItem("userID");
+      var id = storage.getItem("userID");
       var url = "http://appshop.etprogramador.ga/public/rest/purchased/order/" + id;
 
       console.log(url);
@@ -95,7 +95,7 @@ angular.module('app.controllers', ['ionic.cloud'])
           $ionicLoading.hide();
           $ionicPopup.alert({
             title: 'Atenção',
-            template: 'Email ou senha incorretos'
+            template: 'E-mail ou senha incorretos'
           });
         })
       };
@@ -180,6 +180,10 @@ angular.module('app.controllers', ['ionic.cloud'])
           })
 
         }, function (erro) {
+          $ionicPopup.alert({
+            title: 'Atenção',
+            template: erro.data
+          });
           $ionicLoading.hide();
         });
 
@@ -227,7 +231,7 @@ angular.module('app.controllers', ['ionic.cloud'])
           $ionicAuth.signup(details).then(function () {
             $ionicPopup.alert({
               title: 'Atenção',
-              template: 'Usuário criado com sucesso!'
+              template: response.data
             });
 
             // Leva para a tela de login se ocorreu tudo ok
@@ -364,8 +368,8 @@ angular.module('app.controllers', ['ionic.cloud'])
         }
         else {
           var alertPopup = $ionicPopup.alert({
-            title: 'No item in your Cart',
-            template: 'Please add Some Items!'
+            title: 'Não existe itens no carrinho de compras',
+            template: 'Adicione algum produto para prosseguir com a compra'
           });
         }
       };
@@ -381,8 +385,9 @@ angular.module('app.controllers', ['ionic.cloud'])
 
       $scope.dados = {};
 
-
+      var codeLength = $scope.dados.code;
       $scope.verifyZipCode = function () {
+
 
         console.log($scope.dados.code);
 
@@ -390,7 +395,7 @@ angular.module('app.controllers', ['ionic.cloud'])
 
         service.getDistanceMatrix({
 
-          origins: [$scope.dados.code],
+          origins: [0 + $scope.dados.code],
           destinations: ["Etec da zona leste"],
           travelMode: google.maps.TravelMode.DRIVING,
           unitSystem: google.maps.UnitSystem.METRIC
@@ -410,8 +415,8 @@ angular.module('app.controllers', ['ionic.cloud'])
           if (parseInt(km) <= 10) {
             console.log("Ok");
             $ionicPopup.alert({
-              title: "Distancia OK",
-              template: 'Daqui a pouco chega :)'
+              title: "O endereço está no raio de entrega!",
+              template: 'Prosseguindo com a compra.'
             }).then(function () {
               //$state.go('tabsController.home', {}, {reload: true});
               $ionicHistory.clearCache().then(function () {
@@ -497,8 +502,8 @@ angular.module('app.controllers', ['ionic.cloud'])
 
     }])
 
-  .controller('deliveryAddressController', ['factoryService', '$scope', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicHistory', '$state', '$http',
-    function (factoryService, $scope, $stateParams, $ionicLoading, $ionicPopup, $ionicHistory, $state, $http) {
+  .controller('deliveryAddressController', ['sharedCartService', 'factoryService', '$scope', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicHistory', '$state', '$http',
+    function (sharedCartService, factoryService, $scope, $stateParams, $ionicLoading, $ionicPopup, $ionicHistory, $state, $http) {
 
       $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
         viewData.enableBack = true;
@@ -512,6 +517,12 @@ angular.module('app.controllers', ['ionic.cloud'])
         $scope.data = {
           clientSide: 'ng'
         };
+
+        // Informações do carrinho de compras
+        $scope.cart = sharedCartService.cart;
+        $scope.total_qty = sharedCartService.total_qty;
+        $scope.total_amount = parseFloat(sharedCartService.total_amount);
+
       });
 
       var code = $stateParams.codeZip;
@@ -544,7 +555,7 @@ angular.module('app.controllers', ['ionic.cloud'])
         if ($scope.data.serverSide === null || $scope.data.serverSide === undefined) {
           $ionicPopup.alert({
             title: "Atenção",
-            template: 'Escolha uma forma de pagamento :)'
+            template: 'Escolha uma forma de pagamento.'
           })
         } else {
 
@@ -553,7 +564,6 @@ angular.module('app.controllers', ['ionic.cloud'])
           var storage = window.localStorage;
 
           $scope.pagamento = {};
-
 
           var params = {
             'pedido': storage.getItem("pedido"),
@@ -570,11 +580,15 @@ angular.module('app.controllers', ['ionic.cloud'])
 
             console.log(params);
 
+            //Remove Itens do cache
+            storage.removeItem("pedido");
+            storage.removeItem("valorPeido");
+
             $ionicLoading.hide();
 
             $ionicPopup.alert({
-              title: "Pedido OK",
-              template: 'Daqui a pouco chega :)'
+              title: "Compra realizada com sucesso!",
+              template: response.data
             }).then(function () {
               //$state.go('tabsController.home', {}, {reload: true});
               $ionicHistory.clearCache().then(function () {

@@ -9,8 +9,8 @@ angular.module('app.services', [])
     cartObj.cart.add = function (id, image, name, desc, price, qty) {
       if (cartObj.cart.find(id) !== -1) {
         var alertPopup = $ionicPopup.alert({
-          title: 'Product Already Added',
-          template: 'Increase the qty from the cart'
+          title: 'Atenção',
+          template: 'Este produto já se encontra no carrinho de compras.'
         });
         //cartObj.cart[cartObj.cart.find(id)].cart_item_qty+=1;
         //cartObj.total_qty+= 1;

@@ -4,6 +4,7 @@
   "description": "App Shop: An Ionic project",
   "dependencies": {
     "@ionic/cloud": "^0.16.0",
+    "angular-input-masks": "^2.5.0",
     "bluebird": "^3.5.0",
     "gulp": "^3.5.6",
     "gulp-concat": "^2.2.0",
