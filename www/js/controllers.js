@@ -2,24 +2,33 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
 
   .controller('allCategoriesController', ['factoryService', '$scope', '$stateParams', '$ionicLoading', '$ionicPopup',
     function (factoryService, $scope, $stateParams, $ionicLoading, $ionicPopup) {
-      var url = "http://appshop.etprogramador.ga/public/rest/category/all";
-
+      var url = "http://localhost:8000/category";
       $ionicLoading.show();
 
-      factoryService.lista(url).then(function (response) {
-        $scope.categorias = response;
-        console.log("OK");
-        $ionicLoading.hide();
-      }, function (error) {
-        console.log(error);
-        $ionicPopup.alert({
-          title: 'Atenção',
-          template: error.data
+      loadingList(url);
+
+      $scope.doRefresh = function () {
+        loadingList(url);
+        $scope.$broadcast('scroll.refreshComplete');
+      };
+      $scope.doRefresh();
+
+      function loadingList(url) {
+        factoryService.lista(url).then(function (response) {
+          $scope.categories = response;
+          console.log("OK");
+          $ionicLoading.hide();
+        }, function (error) {
+          console.log(error);
+          $ionicPopup.alert({
+            title: 'Atenção',
+            template: error.data
+          });
+          $ionicLoading.hide();
+        }).finally(function () {
+          $ionicLoading.hide();
         });
-        $ionicLoading.hide();
-      }).finally(function () {
-        $ionicLoading.hide();
-      })
+      }
     }])
 
   .controller('homeController', ['$scope', '$stateParams', '$ionicUser',
