@@ -472,21 +472,37 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
         viewData.enableBack = true;
       });
 
-      var idCategoria = $stateParams.urlId;
-      var url = "http://appshop.etprogramador.ga/public/rest/product/category/" + idCategoria;
+      var idCategory = $stateParams.urlId;
+      var url = "http://localhost:8000/product/category/" + idCategory;
       $ionicLoading.show();
 
       console.log("HTTP");
       console.log(url);
 
-      factoryService.lista(url).then(function (response) {
-        $scope.produtos = response;
-      }, function (error) {
-        console.log(error);
-      }).finally(function () {
-        $ionicLoading.hide();
-      })
+      loadingList(url);
 
+      $scope.doRefresh = function () {
+        loadingList(url);
+        $scope.$broadcast('scroll.refreshComplete');
+      };
+      $scope.doRefresh();
+
+      function loadingList(url) {
+        factoryService.lista(url).then(function (response) {
+          $scope.products = response;
+          console.log("OK");
+          $ionicLoading.hide();
+        }, function (error) {
+          console.log(error);
+          $ionicPopup.alert({
+            title: 'Atenção',
+            template: error.data
+          });
+          $ionicLoading.hide();
+        }).finally(function () {
+          $ionicLoading.hide();
+        });
+      }
     }])
 
   .controller('productDetailController', ['sharedCartService', 'factoryService', '$scope', '$stateParams', '$ionicLoading',

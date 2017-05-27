@@ -1,12 +1,17 @@
 <ion-view title="Produtos" id="product-category">
-  <ion-content padding="true" class="has-header">
-    <ion-list>
-      <ion-item ng-repeat="produto	in	produtos" class="item-thumbnail-left"
-                ui-sref="productDetail({idProduto: '{{produto.id}}'})">
-        <img ng-src="{{produto.foto}}" style="object-fit:	cover">
-        <h2>{{produto.nome}}</h2>
-        <p>R$ {{produto.preco}}</p>
-      </ion-item>
-    </ion-list>
+  <ion-content class="has-header">
+
+    <ion-refresher pulling-text="Carregando..." on-refresh="doRefresh()"></ion-refresher>
+
+    <div class="card category-item-margin" ng-repeat="product	in	products">
+      <ion-list>
+        <ion-item class="item-thumbnail-left"
+                  ui-sref="productDetail({idProduto: '{{product.id_product}}'})">
+          <img ng-src="{{product.product_image}}" style="object-fit:	cover">
+          <h2>{{product.name}}</h2>
+          <p>R$ {{product.price}}</p>
+        </ion-item>
+      </ion-list>
+    </div>
   </ion-content>
 </ion-view>
