@@ -3,19 +3,19 @@
 
     <ion-list>
       <ion-item class="item-icon-left">
-        <i class="icon ion-ios-location"></i>Endereço de entrega
+        <i class="icon ion-ios-location"></i>
+        Endereço de entrega
       </ion-item>
 
       <form id="address" name="address" class="list">
-
-        <label class="item item-input" id="code" >
+        <label class="item item-input item-floating-label" id="input-code">
           <span class="input-label">CEP</span>
-          <input placeholder="" type="text" ng-model="dados.code" maxlength="9" minlength="9" ui-br-cep-mask required>
+          <input placeholder="CEP" type="tel" ng-model="dados.code" maxlength="9" minlength="9" ui-br-cep-mask required>
         </label>
       </form>
     </ion-list>
 
     <a id="finalize-payment" class="button button-assertive  button-block icon-right ion-android-checkmark-circle"
-       ng-click="verifyZipCode()"  ng-disabled="address.$invalid">Verificar disponibilidade de entrega</a>
+       ng-click="verifyZipCode()" ng-disabled="address.$invalid">Verificar disponibilidade de entrega</a>
   </ion-content>
 </ion-view>

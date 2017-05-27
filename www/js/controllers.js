@@ -394,8 +394,8 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
 
     }])
 
-  .controller('verifyZipCodeController', ['$scope', '$stateParams', '$ionicPopup', '$state', '$ionicHistory',
-    function ($scope, $stateParams, $ionicPopup, $state, $ionicHistory) {
+  .controller('verifyZipCodeController', ['$scope', '$stateParams', '$ionicPopup', '$state', '$ionicHistory', '$ionicLoading',
+    function ($scope, $stateParams, $ionicPopup, $state, $ionicHistory, $ionicLoading) {
 
       $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
         viewData.enableBack = true;
@@ -404,8 +404,7 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
       $scope.dados = {};
 
       $scope.verifyZipCode = function () {
-
-
+        $ionicLoading.show();
         console.log($scope.dados.code);
 
         var service = new google.maps.DistanceMatrixService();
@@ -453,10 +452,13 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
             }
           }
         } catch (err) {
+          console.log(err);
           $ionicPopup.alert({
             title: "Atenção",
             template: 'CEP incorreto'
           });
+        }finally {
+          $ionicLoading.hide();
         }
       }
     }])
