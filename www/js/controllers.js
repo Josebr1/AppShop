@@ -516,7 +516,7 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
       });
 
       var id = $stateParams.idProduto;
-      var url = "http://appshop.etprogramador.ga/public/rest/product/" + id;
+      var url = "http://localhost:8000/product/" + id;
       $ionicLoading.show();
 
       console.log(cart);
@@ -525,7 +525,8 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
       console.log(url);
 
       factoryService.lista(url).then(function (response) {
-        $scope.produto = response;
+        $scope.productDetails = response;
+        console.log(response);
       }, function (error) {
         console.log(error);
       }).finally(function () {

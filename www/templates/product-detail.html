@@ -1,26 +1,26 @@
 <ion-view title="Detalhe do produto" id="product-detail">
 
   <ion-content padding="true" class="has-header" >
-    <div class="list card">
+    <div class="list card" ng-repeat="product in productDetails">
 
-      <ion-item>{{produto.nome}}</ion-item>
+      <ion-item>{{product.name}}</ion-item>
 
       <div class="item item-body">
 
-        <img ng-src="{{produto.foto}}"  class="style-card-img">
+        <img ng-src="{{product.product_image}}"  class="style-card-img">
 
         <h2 class="text-title"><strong>Preço</strong></h2>
         <div class="show-list-numbers-and-dots">
-          <p style="margin-top:0px;color:#000000;">R$ {{produto.preco}}</p>
+          <p style="margin-top:0px;color:#000000;">R$ {{product.price}}</p>
         </div>
 
         <h2 class="text-title"><strong>Descrição</strong></h2>
         <div class="show-list-numbers-and-dots">
           <p style="color:#000000;">
-            {{produto.descricao}}
+            {{product.description}}
           </p>
         </div>
-        <a ng-click="addToCart(produto.id, produto.foto, produto.nome, produto.descricao, produto.preco)" id="button-buy-products"
+        <a ng-click="addToCart(product.id_product, product.product_image, product.name, product.description, product.price)" id="button-buy-products"
            class="button button-assertive  button-block">Comprar</a>
       </div>
 
