@@ -421,7 +421,7 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
       };
 
       function callback(response, status) {
-        try{
+        try {
           var kmString = response.rows[0].elements[0].distance.text;
           var km = kmString.replace("km", "");
 
@@ -452,7 +452,7 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
               });
             }
           }
-        }catch(err){
+        } catch (err) {
           $ionicPopup.alert({
             title: "Atenção",
             template: 'CEP incorreto'
