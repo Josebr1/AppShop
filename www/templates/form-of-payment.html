@@ -1,0 +1,41 @@
+<ion-view title="Meu Carrinho" id="shopping-cart">
+  <ion-content padding="true" class="has-header">
+
+    <div class="list card">
+      <div class="item item-body">
+        <ion-list>
+          <ion-item class="item-icon-left">
+            <i class="icon ion-card"></i>Pague Online
+          </ion-item>
+          <ion-radio ng-repeat="item in pagamentoListOnline"
+                     ng-value="item.value"
+                     ng-change="itemTypeChanged(item)"
+                     ng-model="data.serverSide"
+                     name="server-side">
+            {{ item.text }}
+          </ion-radio>
+        </ion-list>
+      </div>
+    </div>
+
+    <div class="list card">
+      <div class="item item-body">
+        <ion-list>
+          <ion-item class="item-icon-left">
+            <i class="icon ion-cash"></i>Pague na entrega
+          </ion-item>
+          <ion-radio ng-repeat="item in pagamentoListEntrega"
+                     ng-value="item.value"
+                     ng-change="itemTypeChanged(item)"
+                     ng-model="data.serverSide"
+                     name="server-side">
+            {{ item.text }}
+          </ion-radio>
+        </ion-list>
+      </div>
+    </div>
+
+    <button ng-click="onClickNextPayment()" class="button button-assertive button-block ">FAZER PEDIDO</button>
+
+  </ion-content>
+</ion-view>

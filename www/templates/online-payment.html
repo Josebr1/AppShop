@@ -1,0 +1,103 @@
+<ion-view title="Endereço de Entrega" id="delivery-address">
+  <ion-content padding="true" class="has-header">
+
+
+    <ion-list>
+
+      <form id="address" name="address" class="list">
+
+        <div>
+          <div class="list card">
+            <ion-item class="item-icon-left">
+              <i class="icon ion-card"></i>Endereço de entrega
+            </ion-item>
+
+            <ion-list>
+              <div class="row" style="margin: auto">
+                <div class="col col-33">
+                  <div style="margin: auto">
+                    <img src="../img/visa.jpg" style="width: 50px; height: 30px; margin-right: auto;">
+                    <img src="../img/master_card.jpg" style="width: 50px; height: 30px; margin-right: auto;">
+                  </div>
+                </div>
+                <div class="col col-66">
+                  <label class="item item-input">
+                    <input type="text" placeholder="Number" ng-model="cardInfo.number" class="input-text" required>
+                  </label>
+                </div>
+              </div>
+
+              <div class="row" style="margin: auto">
+                <div class="col">
+                  <label class="item item-input">
+                    <input type="text" placeholder="Nome" ng-model="cardInfo.name">
+                  </label>
+                </div>
+              </div>
+
+              <div class="row" style="margin: auto">
+                <div class="col">
+                  <label class="item item-input">
+                    <input type="text" placeholder="Mes" maxlength="2" minlength="2" ng-model="cardInfo.month" required>
+                  </label>
+                </div>
+                <div class="col">
+                  <label class="item item-input">
+                    <input type="text" placeholder="Ano" maxlength="4" minlength="4" max="12" ng-model="cardInfo.year" required>
+                  </label>
+                </div>
+              </div>
+              <div class="row" style="margin: auto">
+                <div class="col">
+                  <label class="item item-input">
+                    <input type="text" placeholder="CVV" ng-model="cardInfo.cvv" required>
+                  </label>
+                </div>
+              </div>
+            </ion-list>
+          </div>
+        </div>
+
+        <ion-item class="item-icon-left">
+          <i class="icon ion-ios-location"></i>Endereço de entrega
+        </ion-item>
+
+        <label class="item item-input" id="street">
+          <span class="input-label">Rua</span>
+          <input placeholder="" type="text" ng-model="street" disabled>
+        </label>
+
+        <label class="item item-input" id="number" value="dasdas">
+          <span class="input-label">N°</span>
+          <input placeholder="" type="number" ng-model="dataNumber.number" required>
+        </label>
+
+        <label class="item item-input" id="neighborhood">
+          <span class="input-label">Bairro</span>
+          <input placeholder="" type="text" ng-model="neighborhood" disabled>
+        </label>
+
+        <label class="item item-input" id="code">
+          <span class="input-label">CEP</span>
+          <input placeholder="" type="text" ng-model="code" disabled>
+        </label>
+
+      </form>
+    </ion-list>
+
+    <div class="list card">
+      <div class="item item-body">
+        <ion-list>
+          <ion-item class="item-icon-left">
+            <i class="icon ion-android-cart"></i>Pedido
+          </ion-item>
+        </ion-list>
+        <h2 style="color: rgb(0, 0, 0);">Total</h2>
+        <h2 style="color: rgb(41, 233, 36);">R$ {{total_amount}}</h2>
+      </div>
+    </div>
+    <a id="finalize-payment" class="button button-assertive  button-block icon-right ion-android-checkmark-circle"
+       ng-click="finalizePayment()" ng-disabled="address.$invalid" ng-disabled="formaPagamento.$invalid">FAZER
+      PEDIDO</a>
+  </ion-content>
+</ion-view>

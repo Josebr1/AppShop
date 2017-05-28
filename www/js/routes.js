@@ -82,10 +82,10 @@ angular.module('app.routes', ['ionicUIRouter'])
 
       })
 
-      .state('deliveryAddress', {
-        url: '/delivery-address:codeZip',
-        templateUrl: 'templates/delivery-address.html',
-        controller: 'deliveryAddressController'
+      .state('onlinePayment', {
+        url: '/online-payment',
+        templateUrl: 'templates/online-payment.html',
+        controller: 'onlinePaymentController'
 
       })
 
@@ -105,17 +105,29 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/verify-zip-code',
         templateUrl: 'templates/verify-zip-code.html',
         controller: 'verifyZipCodeController'
+      })
+
+      .state('formOfPayment', {
+        url: '/form-of-payment',
+        templateUrl: 'templates/form-of-payment.html',
+        controller: 'formOfPaymentController'
+      })
+
+      .state('payOnDelivery', {
+        url: '/pay-on-delivery',
+        templateUrl: 'templates/pay-on-delivery.html',
+        controller: 'payOnDeliveryController'
       });
 
-    $urlRouterProvider.otherwise(function($injector, $location){
+    $urlRouterProvider.otherwise(function ($injector, $location) {
       var state = $injector.get('$state');
 
       var storage = window.localStorage;
       console.log(storage.getItem("logado"));
 
-      if(storage.getItem("logado")){
+      if (storage.getItem("logado")) {
         state.go('tabsController.home');
-      }else{
+      } else {
         console.log(storage.getItem("logado"));
         state.go('signIn');
       }

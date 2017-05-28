@@ -1,21 +1,5 @@
-<ion-view title="Endereço de Entrega" id="delivery-address">
+<ion-view title="Endereço de Entrega">
   <ion-content padding="true" class="has-header">
-
-    <div class="list card">
-      <div class="item item-body">
-        <ion-list>
-          <ion-item class="item-icon-left">
-            <i class="icon ion-card"></i>Pague na entrega
-          </ion-item>
-          <ion-radio ng-repeat="item in pagamentoList"
-                     ng-value="item.value"
-                     ng-model="data.serverSide"
-                     name="server-side">
-            {{ item.text }}
-          </ion-radio>
-        </ion-list>
-      </div>
-    </div>
 
     <ion-list>
       <ion-item class="item-icon-left">
@@ -59,6 +43,7 @@
       </div>
     </div>
     <a id="finalize-payment" class="button button-assertive  button-block icon-right ion-android-checkmark-circle"
-       ng-click="finalizePayment()" ng-disabled="address.$invalid" ng-disabled="formaPagamento.$invalid">FAZER PEDIDO</a>
+       ng-click="finalizePayment()" ng-disabled="address.$invalid" ng-disabled="formaPagamento.$invalid">FAZER
+      PEDIDO</a>
   </ion-content>
 </ion-view>

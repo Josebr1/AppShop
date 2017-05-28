@@ -2,11 +2,11 @@
 <widget id="br.com.app.ionic.shop" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>App Shop</name>
     <description>
-        Projeto 2017
-    </description>
+    Projeto 2017
+  </description>
     <author email="jose.silva.br@outlook.com">
-      José Antônio
-    </author>
+    José Antônio
+  </author>
     <platform name="android">
         <preference name="StatusBarBackgroundColor" value="#E53935" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
@@ -35,7 +35,8 @@
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashScreen" value="screen" />
     <content src="index.html" />
-    <access origin="*" />
+    <access origin="*" subdomains="true" />
+    <allow-navigation href="*" />
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
@@ -46,4 +47,5 @@
     </plugin>
     <plugin name="cordova-plugin-inappbrowser" spec="~1.7.1" />
     <plugin name="cordova-sqlite-storage" spec="~2.0.3" />
+    <plugin name="cordova-plugin-whitelist" spec="^1.3.2" />
 </widget>

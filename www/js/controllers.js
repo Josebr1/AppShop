@@ -437,7 +437,9 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
               }).then(function () {
                 //$state.go('tabsController.home', {}, {reload: true});
                 $ionicHistory.clearCache().then(function () {
-                  $state.go('deliveryAddress', {"codeZip": $scope.dados.code}, {reload: true});
+                  var storage = window.localStorage;
+                  storage.setItem("code", $scope.dados.code);
+                  $state.go('formOfPayment', {}, {reload: true});
                 });
               });
             } else {
@@ -457,7 +459,7 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
             title: "Atenção",
             template: 'CEP incorreto'
           });
-        }finally {
+        } finally {
           $ionicLoading.hide();
         }
       }
@@ -544,42 +546,64 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
 
     }])
 
-  .controller('deliveryAddressController', ['sharedCartService', 'factoryService', '$scope', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicHistory', '$state', '$http',
+  .controller('onlinePaymentController', ['sharedCartService', 'factoryService', '$scope', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicHistory', '$state', '$http',
     function (sharedCartService, factoryService, $scope, $stateParams, $ionicLoading, $ionicPopup, $ionicHistory, $state, $http) {
 
       $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
         viewData.enableBack = true;
-        $scope.pagamentoList = [
-          {text: "Cartão de débito", value: "debito"},
-          {text: "Cartão de crédito", value: "credito"},
-          {text: "Dinheiro", value: "dinheiro"},
-          {text: "Vale Refeição", value: "refeicao"}
-        ];
-
-        $scope.data = {
-          clientSide: 'ng'
-        };
-
         // Informações do carrinho de compras
         $scope.cart = sharedCartService.cart;
         $scope.total_qty = sharedCartService.total_qty;
         $scope.total_amount = parseFloat(sharedCartService.total_amount);
 
         $scope.dataNumber = {};
+        $scope.cardInfo = {};
 
+        $scope.hideLoader = true;
       });
 
-      var code = $stateParams.codeZip;
-      var url = "https://viacep.com.br/ws/" + code + "/json/";
+
+      function pargameHash() {
+        PagarMe.encryption_key = "ek_test_cjcVOAPtjFTgBSpE4AoJoJFl9DUSya";
+        var creditCard = new PagarMe.creditCard();
+        creditCard.cardHolderName = $scope.cardInfo.name;
+        creditCard.cardExpirationMonth = $scope.cardInfo.month;
+        creditCard.cardExpirationYear = $scope.cardInfo.year;
+        creditCard.cardNumber = $scope.cardInfo.number;
+        creditCard.cardCVV = $scope.cardInfo.cvv;
+
+        console.log($scope.cardInfo);
+
+        var fieldErrors = creditCard.fieldErrors();
+        var errors = [], i = 0;
+        for (var field in fieldErrors) {
+          errors[i++] = field;
+        }
+
+        if (errors.length > 0) {
+          return errors;
+        } else {
+          /* se não há erros, gera o card_hash... */
+          creditCard.generateHash(function (cardHash) {
+            console.log(cardHash);
+            if(cardHash !== null ){
+              payment(cardHash);
+            }
+          });
+        }
+      }
+
+      // get key zip code
+      var storage = window.localStorage;
+      var valueCode = storage.getItem("code");
+
+      var url = "https://viacep.com.br/ws/" + valueCode + "/json/";
 
       $ionicLoading.show();
-
       console.log("HTTP");
       console.log(url);
-
       factoryService.lista(url).then(function (response) {
         $scope.infor = response;
-
         $scope.street = $scope.infor.logradouro;
         $scope.neighborhood = $scope.infor.bairro;
         $scope.code = $scope.infor.cep;
@@ -594,75 +618,213 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
       $scope.finalizePayment = function () {
         console.log("finalizePayment");
 
-        console.log($scope.data.serverSide);
+        $ionicLoading.show();
+        $scope.pagamento = {};
 
+        pargameHash();
+
+      };
+
+
+      function payment(token) {
+
+        console.log("Payment" + token);
+
+        // Todos os itens do pedido
+        var items = [];
+        for (var i = 0, len = sharedCartService.cart.length; i < len; i++) {
+          items.push({
+            "quantity": sharedCartService.cart[i].cart_item_qty,
+            "product_id": sharedCartService.cart[i].cart_item_id
+          })
+        }
+
+        $scope.dataNumber = {};
+
+        var params = {
+          'description_order': storage.getItem("pedido"),
+          'address': $scope.street + " " + $scope.neighborhood + " " + $scope.code + " n° " + $scope.dataNumber.number,
+          'valor_total': storage.getItem("valorPeido"),
+          'form_payment': "debito",
+          'user_id': "JoseBR1",
+          'items': items,
+          'token_card': token
+        };
+
+        $http.post("http://localhost:8000/payment", JSON.stringify(params)).then(function successCallback(response) {
+          console.log("successCallback" + response.data);
+          console.log(params);
+
+          //Remove Itens do cache
+          storage.removeItem("pedido");
+          storage.removeItem("valorPeido");
+
+          $ionicLoading.hide();
+
+          // Limpando o carrinho de compras
+          for (var i = 0, len = sharedCartService.cart.length; i < len; i++) {
+            sharedCartService.cart.drop(sharedCartService.cart[i].cart_item_id);
+          }
+
+          $ionicPopup.alert({
+            title: "Compra realizada com sucesso!",
+            template: response.data
+          }).then(function () {
+            //$state.go('tabsController.home', {}, {reload: true});
+            $ionicHistory.clearCache().then(function () {
+              $ionicHistory.clearHistory();
+              $state.go('tabsController.home');
+
+              $ionicHistory.nextViewOptions({
+                disableAnimate: true,
+                disableBack: true
+              });
+            });
+          });
+          // Erro servidor proprio
+        }, function errorCallback(response) {
+          console.log("errorCallback" + response.data + response.status);
+          $ionicLoading.hide();
+          $ionicPopup.alert({
+            title: 'Atenção',
+            template: response.data
+          });
+        });
+      }
+
+    }])
+
+  .controller('formOfPaymentController', ['sharedCartService', 'factoryService', '$scope', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicHistory', '$state', '$http',
+    function (sharedCartService, factoryService, $scope, $stateParams, $ionicLoading, $ionicPopup, $ionicHistory, $state, $http) {
+      $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
+        viewData.enableBack = true;
+        $scope.pagamentoListOnline = [
+          {text: "Cartão de crédito", value: "creditOnline"}
+        ];
+
+        $scope.pagamentoListEntrega = [
+          {text: "Cartão de débito", value: "debit"},
+          {text: "Cartão de crédito", value: "credit"},
+          {text: "Dinheiro", value: "money "}
+        ];
+
+        $scope.data = {
+          clientSide: 'ng'
+        };
+      });
+
+      $scope.onClickNextPayment = function () {
         if ($scope.data.serverSide === null || $scope.data.serverSide === undefined) {
           $ionicPopup.alert({
             title: "Atenção",
             template: 'Escolha uma forma de pagamento.'
-          })
-        } else {
-
-          $ionicLoading.show();
-
-          var storage = window.localStorage;
-
-          $scope.pagamento = {};
-
-
-          var params = {
-            'pedido': storage.getItem("pedido"),
-            'endereco': $scope.street + " " + $scope.neighborhood + " " + $scope.code + " n° " + $scope.dataNumber.number,
-            'valor_total': storage.getItem("valorPeido"),
-            'status': "Item Comprado",
-            'forma_pagamento': $scope.data.serverSide,
-            'user_id': storage.getItem("userID")
-          };
-
-
-          $http.post("http://appshop.etprogramador.ga/public/rest/purchased/add", JSON.stringify(params)).then(function successCallback(response) {
-            console.log("successCallback" + response.data);
-
-            console.log(params);
-
-            //Remove Itens do cache
-            storage.removeItem("pedido");
-            storage.removeItem("valorPeido");
-
-            $ionicLoading.hide();
-
-            // Limpando o carrinho de compras
-            for (var i = 0, len = $scope.cart.length; i < len; i++) {
-              console.log($scope.cart[i].cart_item_id);
-              $scope.cart.drop($scope.cart[i].cart_item_id);
-            }
-
-            $ionicPopup.alert({
-              title: "Compra realizada com sucesso!",
-              template: response.data
-            }).then(function () {
-              //$state.go('tabsController.home', {}, {reload: true});
-              $ionicHistory.clearCache().then(function () {
-                $ionicHistory.clearHistory();
-                $state.go('tabsController.home');
-
-                $ionicHistory.nextViewOptions({
-                  disableAnimate: true,
-                  disableBack: true
-                });
-              });
-            });
-
-            // Erro servidor proprio
-          }, function errorCallback(response) {
-            console.log("errorCallback" + response.data + response.status);
-            $ionicLoading.hide();
-            $ionicPopup.alert({
-              title: 'Atenção',
-              template: response.data
-            });
           });
+        } else {
+          if ($scope.data.serverSide === "creditOnline") {
+            console.log("creditOnline");
+            $state.go('onlinePayment', {"formPayment": $scope.data.serverSide}, {reload: true});
+          } else {
+            $state.go('payOnDelivery', {"formPayment": $scope.data.serverSide}, {reload: true});
+          }
         }
       }
-    }]);
+    }])
 
+  .controller('payOnDeliveryController', ['sharedCartService', 'factoryService', '$scope', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicHistory', '$state', '$http',
+    function (sharedCartService, factoryService, $scope, $stateParams, $ionicLoading, $ionicPopup, $ionicHistory, $state, $http) {
+
+      $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
+        viewData.enableBack = true;
+        // Informações do carrinho de compras
+        $scope.total_amount = parseFloat(sharedCartService.total_amount);
+      });
+
+      // get key zip code
+      var storage = window.localStorage;
+      var valueCode = storage.getItem("code");
+
+      var url = "https://viacep.com.br/ws/" + valueCode + "/json/";
+      // Carregamento do endereço de entrega
+      $ionicLoading.show();
+      console.log("HTTP");
+      console.log(url);
+      factoryService.lista(url).then(function (response) {
+        $scope.infor = response;
+        $scope.street = $scope.infor.logradouro;
+        $scope.neighborhood = $scope.infor.bairro;
+        $scope.code = $scope.infor.cep;
+
+        console.log($scope.infor.logradouro);
+      }, function (error) {
+        console.log(error);
+      }).finally(function () {
+        $ionicLoading.hide();
+      });
+
+      $scope.finalizePayment = function () {
+        console.log("finalizePayment");
+
+        $ionicLoading.show();
+
+        // Todos os itens do pedido
+        var items = [];
+        for (var i = 0, len = sharedCartService.cart.length; i < len; i++) {
+          items.push({
+            "quantity": sharedCartService.cart[i].cart_item_qty,
+            "product_id": sharedCartService.cart[i].cart_item_id
+          })
+        }
+
+        $scope.dataNumber = {};
+
+        var params = {
+          'description_order': storage.getItem("pedido"),
+          'address': $scope.street + " " + $scope.neighborhood + " " + $scope.code + " n° " + $scope.dataNumber.number,
+          'valor_total': storage.getItem("valorPeido"),
+          'form_payment': "debito",
+          'user_id': "JoseBR1",
+          'items': items,
+          'token_card': ""
+        };
+
+        $http.post("http://localhost:8000/order", JSON.stringify(params)).then(function successCallback(response) {
+          console.log("successCallback" + response.data);
+          console.log(params);
+
+          //Remove Itens do cache
+          storage.removeItem("pedido");
+          storage.removeItem("valorPeido");
+
+          $ionicLoading.hide();
+
+          // Limpando o carrinho de compras
+          for (var i = 0, len = sharedCartService.cart.length; i < len; i++) {
+            sharedCartService.cart.drop(sharedCartService.cart[i].cart_item_id);
+          }
+
+          $ionicPopup.alert({
+            title: "Compra realizada com sucesso!",
+            template: response.data
+          }).then(function () {
+            //$state.go('tabsController.home', {}, {reload: true});
+            $ionicHistory.clearCache().then(function () {
+              $ionicHistory.clearHistory();
+              $state.go('tabsController.home');
+
+              $ionicHistory.nextViewOptions({
+                disableAnimate: true,
+                disableBack: true
+              });
+            });
+          });
+          // Erro servidor proprio
+        }, function errorCallback(response) {
+          console.log("errorCallback" + response.data + response.status);
+          $ionicLoading.hide();
+          $ionicPopup.alert({
+            title: 'Atenção',
+            template: response.data
+          });
+        });
+      }
+    }]);
