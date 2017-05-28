@@ -58,7 +58,7 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
 
       var storage = window.localStorage;
       var id = storage.getItem("userID");
-      var url = "http://appshop.etprogramador.ga/public/rest/purchased/order/" + id;
+      var url = "http://localhost:8000/order/products/orders/" + id;
 
       console.log(url);
 
@@ -119,108 +119,62 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
       };
 
       $scope.signInFacebook = function () {
-
         $ionicLoading.show();
-
 
         $ionicAuth.login('facebook').then(function () {
 
-
           // Detalhes da Conta salva no banco de dados proprio
           var params = {
-            "user_id": $ionicUser.social.facebook.uid,
-            "nome": $ionicUser.social.facebook.data.full_name,
-            "email": $ionicUser.social.facebook.data.email
+            "id_user": $ionicUser.social.facebook.uid,
+            "name": $ionicUser.social.facebook.data.full_name,
+            "email": $ionicUser.social.facebook.data.email,
+            "photo_url": $ionicUser.social.facebook.data.profile_picture
           };
 
-          factoryService.lista("http://appshop.etprogramador.ga/public/rest/user/result/row/" + $ionicUser.social.facebook.uid).then(function (response) {
-            $scope.categorias = response;
+          $http.post("http://localhost:8000/user", JSON.stringify(params)).then(function successCallback(response) {
+            console.log("successCallback" + response.data);
 
-            console.log(response.toString());
-            var result = response.toString();
-            if (result !== "1") {
-
-              $http.post("http://appshop.etprogramador.ga/public/rest/user/add", JSON.stringify(params)).then(function successCallback(response) {
-                console.log("successCallback" + response.data);
-
-                if ($ionicAuth.isAuthenticated()) {
-                  // Leva para a tela de login se ocorreu tudo ok
-                  $ionicHistory.clearCache().then(function () {
-                    $ionicHistory.clearHistory();
-                    $state.go('tabsController.home');
-                    $ionicHistory.nextViewOptions({
-                      disableAnimate: true,
-                      disableBack: true
-                    });
-                  });
-                  // Gravando o usuario logado
-                  var storage = window.localStorage;
-                  storage.setItem("logado", true);
-                  // Salcando os dados em cache
-                  console.log($ionicUser.social.facebook.uid);
-                  storage.setItem("userID", $ionicUser.social.facebook.uid);
-                  storage.setItem("userName", $ionicUser.social.facebook.data.full_name);
-                  storage.setItem("userEmail", $ionicUser.social.facebook.data.email);
-                  $ionicLoading.hide();
-                }
-
-
-              }, function errorCallback(response) {
-                console.log("errorCallback" + response.data + response.status);
-                $ionicLoading.hide();
-                $ionicPopup.alert({
-                  title: 'Atenção',
-                  template: response.data
+            if ($ionicAuth.isAuthenticated()) {
+              // Leva para a tela de login se ocorreu tudo ok
+              $ionicHistory.clearCache().then(function () {
+                $ionicHistory.clearHistory();
+                $state.go('tabsController.home');
+                $ionicHistory.nextViewOptions({
+                  disableAnimate: true,
+                  disableBack: true
                 });
               });
-            } else {
-              if ($ionicAuth.isAuthenticated()) {
-                // Leva para a tela de login se ocorreu tudo ok
-                $ionicHistory.clearCache().then(function () {
-                  $ionicHistory.clearHistory();
-                  $state.go('tabsController.home');
-                  $ionicHistory.nextViewOptions({
-                    disableAnimate: true,
-                    disableBack: true
-                  });
-                });
-                // Gravando o usuario logado
-                var storage = window.localStorage;
-                storage.setItem("logado", true);
-                $ionicLoading.hide();
-              }
+              // Gravando o usuario logado
+              var storage = window.localStorage;
+              storage.setItem("logado", true);
+              // Salcando os dados em cache
+              console.log($ionicUser.social.facebook.uid);
+              storage.setItem("userID", $ionicUser.social.facebook.uid);
+              storage.setItem("userName", $ionicUser.social.facebook.data.full_name);
+              storage.setItem("userEmail", $ionicUser.social.facebook.data.email);
+              $ionicLoading.hide();
             }
-            console.log("OK");
-          }, function (error) {
-            console.log(error);
-          }).finally(function () {
+          }, function errorCallback(response) {
+            console.log("errorCallback" + response.data + response.status);
             $ionicLoading.hide();
-          })
-
-        }, function (erro) {
-          $ionicPopup.alert({
-            title: 'Atenção',
-            template: erro.data
+            $ionicPopup.alert({
+              title: 'Atenção',
+              template: response.data
+            });
           });
+          console.log("OK");
+        }, function (error) {
+          console.log(error);
+        }).finally(function () {
           $ionicLoading.hide();
-        });
-
-
+        })
       }
-
     }])
 
   .controller('signUpController', ['$scope', '$stateParams', '$ionicAuth', '$ionicUser', '$ionicLoading', '$ionicHistory', '$state', '$ionicPopup', '$http',
     function ($scope, $stateParams, $ionicAuth, $ionicUser, $ionicLoading, $ionicHistory, $state, $ionicPopup, $http) {
-
       $scope.data = {};
 
-      /**
-       * Login Usando o ionic salvando o usuário no banco de dados
-       * ***************OBS: Método com erro, não produção********************
-       * Primeiro salvamos o usuário no banco de dados proprio, depois se ocorreu tudo ok salvamos no ionic para
-       * gerenciamento de contas e mensagens push, essa meneira pode ocorrer problemas com o app em produção
-       */
       $scope.signUpLoginIonic = function () {
 
         $ionicLoading.show();
@@ -237,13 +191,14 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
 
         // Detalhes da Conta salva no banco de dados proprio
         var params = {
-          "user_id": $scope.data.user,
-          "nome": $scope.data.name,
+          "id_user": $scope.data.user,
+          "name": $scope.data.name,
           "email": $scope.data.email,
-          "telefone": $scope.data.tel
+          "phone": $scope.data.tel
         };
 
-        $http.post("http://appshop.etprogramador.ga/public/rest/user/add", JSON.stringify(params)).then(function successCallback(response) {
+
+        $http.post("http://localhost:8000/user", JSON.stringify(params)).then(function successCallback(response) {
           console.log("successCallback" + response.data);
 
           $ionicAuth.signup(details).then(function () {
@@ -586,7 +541,7 @@ angular.module('app.controllers', ['ionic.cloud', 'ui.utils.masks'])
           /* se não há erros, gera o card_hash... */
           creditCard.generateHash(function (cardHash) {
             console.log(cardHash);
-            if(cardHash !== null ){
+            if (cardHash !== null) {
               payment(cardHash);
             }
           });
